@@ -9,7 +9,7 @@ export default function Home() {
           홍길동
         </h1>
         <p className="mt-3 text-base leading-relaxed text-zinc-600 dark:text-zinc-400">
-          안녕하세요! 바이브 코딩을 배우고 있는 대학생입니다.
+          안녕하세요! 문제 해결을 즐기며 더 나은 사용자 경험과 깔끔한 코드를 만들어가는 풀스택 개발자입니다.
         </p>
       </main>
     </div>
