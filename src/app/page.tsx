@@ -4,12 +4,10 @@ import { useState } from "react";
 import Image from "next/image";
 
 export default function Home() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchCategory, setSearchCategory] = useState("All");
-  const [pollChoice, setPollChoice] = useState("GBA");
-  const [pollSubmitted, setPollSubmitted] = useState(false);
-  const [activeTab, setActiveTab] = useState<"news" | "games" | "systems" | "links">("news");
+  const [activeTab, setActiveTab] = useState<"links" | "projects" | "about" | "contact">("links");
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(128);
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText("gildong@example.com");
@@ -17,495 +15,403 @@ export default function Home() {
     setTimeout(() => setCopiedEmail(false), 2000);
   };
 
-  const newsItems = [
-    {
-      title: "Game Boy Advance Launches Worldwide with Record Hits!",
-      category: "HARDWARE",
-      date: "JUN 2001",
-      url: "#",
-    },
-    {
-      title: "Super Mario Advance: New Worlds & Classic Action Unveiled",
-      category: "GAMES",
-      date: "MAY 2001",
-      url: "#",
-    },
-    {
-      title: "Nintendo GameCube Official Hardware Specifications Released",
-      category: "SYSTEMS",
-      date: "MAY 2001",
-      url: "#",
-    },
-    {
-      title: "Pokémon Crystal Version Announced for Game Boy Color",
-      category: "ANNOUNCEMENT",
-      date: "APR 2001",
-      url: "#",
-    },
-  ];
+  const handleLike = () => {
+    if (!liked) {
+      setLikeCount((prev) => prev + 1);
+      setLiked(true);
+    } else {
+      setLikeCount((prev) => prev - 1);
+      setLiked(false);
+    }
+  };
 
-  const featuredSites = [
+  const links = [
     {
-      name: "Pokémon Official",
-      url: "www.pokemon.com",
-      image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
-    },
-    {
-      name: "Zelda Universe",
-      url: "www.zelda.com",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=80",
-    },
-    {
-      name: "Mario World",
-      url: "www.mario.com",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
-    },
-    {
-      name: "My-Link Hub",
-      url: "www.my-link.com",
-      image: "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?auto=format&fit=crop&w=400&q=80",
-    },
-  ];
-
-  const profileLinks = [
-    {
-      name: "GITHUB REPOSITORY",
-      desc: "45 Open Source & Personal Repos",
+      title: "GitHub 저장소",
+      subtitle: "오픈소스 및 프론트엔드 프로젝트 코드",
       url: "https://github.com",
-      badge: "CODE",
+      badge: "45개 Repos",
+      icon: "🐙",
+      accentBg: "bg-[#191f28]",
+      accentText: "text-white",
     },
     {
-      name: "TECH BLOG (VELOG)",
-      desc: "Weekly Frontend & Hardware Notes",
+      title: "기술 블로그 (Velog)",
+      subtitle: "개발 아티클과 디버깅 기록을 공유해요",
       url: "https://velog.io",
-      badge: "BLOG",
+      badge: "매주 작성",
+      icon: "📝",
+      accentBg: "bg-[#10b981]/10",
+      accentText: "text-[#10b981]",
     },
     {
-      name: "LINKEDIN NETWORK",
-      desc: "Connect for Global Engineering",
+      title: "LinkedIn 프로필",
+      subtitle: "글로벌 비즈니스 및 커리어 이력",
       url: "https://linkedin.com",
-      badge: "PRO",
+      badge: "일촌 맺기",
+      icon: "💼",
+      accentBg: "bg-[#3182f6]/10",
+      accentText: "text-[#3182f6]",
     },
     {
-      name: "MY-LINK PORTFOLIO",
-      desc: "Interactive Console Apps & Demos",
+      title: "온라인 포트폴리오",
+      subtitle: "인터랙티브 웹 서비스 상세 프로젝트 모음",
       url: "#",
-      badge: "STAR 🔥",
+      badge: "대표 사이트",
+      icon: "✨",
+      accentBg: "bg-[#ffc342]/20",
+      accentText: "text-[#191f28]",
     },
+  ];
+
+  const projects = [
+    {
+      title: "LinkCraft (링크 통합 빌더)",
+      category: "웹 서비스",
+      description: "나만의 맞춤형 프로필과 링크 페이지를 3초 만에 커스텀하고 관리하는 서비스예요.",
+      tags: ["Next.js 16", "TypeScript", "Tailwind CSS"],
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      title: "SmartDash (실시간 대시보드)",
+      category: "SaaS 플랫폼",
+      description: "대용량 금융 파이프라인과 잔액 데이터를 한눈에 시각화해주는 대시보드예요.",
+      tags: ["React 19", "WebSockets", "Recharts"],
+      image: "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      title: "AI Co-pilot (UI 자동 생성기)",
+      category: "AI 엔진",
+      description: "자연어 프롬프트를 직관적인 웹 인터페이스 컴포넌트로 자동 구현해주는 AI 툴킷이에요.",
+      tags: ["Next.js", "OpenAI API", "TDS UI"],
+      image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
+    },
+  ];
+
+  const skills = [
+    { name: "React / Next.js", exp: "5년차", level: "전문가" },
+    { name: "TypeScript", exp: "4년차", level: "숙련" },
+    { name: "Tailwind CSS / TDS", exp: "4년차", level: "전문가" },
+    { name: "Node.js / Express", exp: "3년차", level: "활용가능" },
+    { name: "PostgreSQL / Prisma", exp: "3년차", level: "활용가능" },
+    { name: "Git & Docker", exp: "4년차", level: "숙련" },
   ];
 
   return (
-    <div className="min-h-screen bg-[#7a8aba] text-[#21242e] font-sans p-2 sm:p-4 lg:p-6 select-none">
-      {/* Outer Console Frame Container */}
-      <div className="mx-auto max-w-[840px]">
-        
-        {/* MASTHEAD: Mario Mascot + Speech Bubble & Search Module */}
-        <header className="mb-2 flex flex-col sm:flex-row items-center justify-between gap-3 px-2">
-          
-          {/* Mario Mascot & Speech Bubble */}
-          <div className="flex items-center gap-3">
-            {/* Mario Mascot Graphic Icon */}
-            <div className="relative h-14 w-14 sm:h-16 sm:w-16 shrink-0 beveled-plate bg-[#dedede] rounded-full p-1 overflow-hidden shadow-md">
-              <Image
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80"
-                alt="Mario Mascot"
-                fill
-                className="object-cover rounded-full"
-              />
-            </div>
-
-            {/* Welcome Speech Bubble */}
-            <div className="relative border-2 border-[#3d4f97] bg-white px-3.5 py-1.5 rounded-2xl shadow-sm">
-              <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-0 h-0 border-y-[6px] border-y-transparent border-r-[8px] border-r-[#3d4f97]" />
-              <p className="text-xs font-bold text-[#21242e]">
-                Welcome to <span className="font-extrabold text-[#e60012]">Nintendo.com</span>! 🎮
-              </p>
-              <p className="text-[10px] text-[#3d4f97] font-semibold">
-                Circa 2001 Console Hardware Edition
-              </p>
-            </div>
+    <div className="min-h-screen bg-[#f2f4f6] text-[#191f28] pb-28">
+      
+      {/* TDS Top App Bar (56pt) */}
+      <header className="sticky top-0 z-30 flex h-14 w-full items-center justify-between bg-white/80 px-4 backdrop-blur-md border-b border-[#e5e8eb]">
+        <div className="flex items-center gap-2">
+          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#3182f6] text-xs font-bold text-white">
+            t
           </div>
-
-          {/* Search Input Module */}
-          <div className="flex items-center gap-1.5 w-full sm:w-auto">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search Games, Systems..."
-              className="recessed-inset bg-white px-2.5 py-1 text-xs text-[#21242e] placeholder-[#60619c] font-medium outline-none w-full sm:w-44"
-            />
-            <select
-              value={searchCategory}
-              onChange={(e) => setSearchCategory(e.target.value)}
-              className="border border-[#21242e] bg-white px-2 py-1 text-xs font-bold text-[#21242e] outline-none"
-            >
-              <option value="All">All</option>
-              <option value="Games">Games</option>
-              <option value="Systems">Systems</option>
-              <option value="CodeBank">Code Bank</option>
-            </select>
-            <button
-              onClick={() => alert(`Searching for: ${searchQuery}`)}
-              className="beveled-chip bg-[#ecab37] hover:bg-[#e48600] text-[#21242e] px-3 py-1 text-xs font-black uppercase tracking-wider"
-            >
-              GO
-            </button>
-          </div>
-        </header>
-
-        {/* MAIN CONSOLE FACEPLATE */}
-        <div className="beveled-plate bg-[#7a8aba] p-2 sm:p-3 space-y-2">
-
-          {/* 1. DUAL NAVIGATION LAYER */}
-          {/* Primary Carbon Command Nav Bar */}
-          <div className="halftone-carbon border-b-2 border-[#3d4f97] p-2 flex flex-col md:flex-row items-center justify-between gap-2.5">
-            
-            {/* Nintendo Racetrack Logo Pill */}
-            <div className="flex items-center gap-3">
-              <div className="bg-white px-3.5 py-1 rounded-full border-2 border-[#e60012] shadow-sm shrink-0">
-                <span className="font-black text-sm tracking-tight text-[#e60012] italic">
-                  Nintendo<span className="text-[10px] not-italic ml-0.5">®</span>
-                </span>
-              </div>
-
-              {/* Primary Nav Menu Words (Nav Gold) */}
-              <nav className="flex items-center gap-3 sm:gap-5">
-                {["GAMES", "SYSTEMS", "NEWS", "NSIDER", "DOWNLOADS"].map((menu) => (
-                  <button
-                    key={menu}
-                    onClick={() => setActiveTab(menu.toLowerCase() as typeof activeTab)}
-                    className="text-xs font-extrabold uppercase tracking-wider text-[#e48600] hover:text-[#f68d1f] transition-colors"
-                  >
-                    {menu}
-                  </button>
-                ))}
-              </nav>
-            </div>
-
-            {/* Utility Chips (Amber) */}
-            <div className="flex items-center gap-2">
-              <button className="beveled-chip bg-[#ecab37] text-[#21242e] px-2.5 py-1 text-[11px] font-black uppercase tracking-wider flex items-center gap-1">
-                <span>🔑</span> CODE BANK
-              </button>
-              <button className="beveled-chip bg-[#ecab37] text-[#21242e] px-2.5 py-1 text-[11px] font-black uppercase tracking-wider flex items-center gap-1">
-                <span>🎯</span> GAME FINDER
-              </button>
-            </div>
-          </div>
-
-          {/* Secondary Subnav Strip (Pale Sky) */}
-          <div className="bg-[#9fbee7] border-b-2 border-[#3d4f97] px-3 py-1 flex items-center justify-between text-[11px] font-bold text-[#21242e] overflow-x-auto whitespace-nowrap scrollbar-none">
-            <div className="flex items-center gap-3">
-              <span className="hover:underline cursor-pointer">PARENTS</span>
-              <span>|</span>
-              <span className="hover:underline cursor-pointer">CUSTOMER SERVICE</span>
-              <span>|</span>
-              <span className="hover:underline cursor-pointer">CORPORATE</span>
-              <span>|</span>
-              <span className="hover:underline cursor-pointer">GLOBAL</span>
-              <span>|</span>
-              <span className="hover:underline cursor-pointer">PRIVACY</span>
-              <span>|</span>
-              <span className="hover:underline cursor-pointer">MY-LINK STORE</span>
-            </div>
-            <button
-              onClick={handleCopyEmail}
-              className="text-[#e60012] hover:underline font-extrabold ml-4"
-            >
-              {copiedEmail ? "EMAIL COPIED! ✓" : "CONTACT US ✉️"}
-            </button>
-          </div>
-
-          {/* 2. HERO FIELD PANEL */}
-          <div className="relative border-2 border-[#3d4f97] bg-[#acace7] p-4 sm:p-6 overflow-hidden shadow-inner">
-            {/* Background Product Image */}
-            <Image
-              src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80"
-              alt="Hero Box Art"
-              fill
-              priority
-              className="object-cover opacity-30 mix-blend-multiply filter contrast-125"
-            />
-
-            <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="max-w-md">
-                <span className="inline-block bg-[#f68d1f] text-white px-2 py-0.5 text-[10px] font-black uppercase tracking-widest mb-1 shadow-sm">
-                  NEW SYSTEM RELEASE
-                </span>
-                <h1 className="box-art-title text-3xl sm:text-4xl tracking-tight leading-none mb-2">
-                  GAME BOY ADVANCE & MY-LINK
-                </h1>
-                <p className="text-xs sm:text-sm font-bold text-[#21242e] leading-snug drop-shadow-sm">
-                  Gorgeous 32-bit graphics, stereo sound, and full backward compatibility. Experience portable power redefined!
-                </p>
-              </div>
-
-              {/* Forward Action Disc Button */}
-              <div className="flex items-center gap-3">
-                <div className="text-right hidden sm:block">
-                  <span className="block text-[11px] font-black text-[#21242e] uppercase">LEARN MORE</span>
-                  <span className="text-[10px] text-[#3d4f97] font-extrabold uppercase">GET SYSTEM INFO</span>
-                </div>
-                <button
-                  onClick={() => alert("Launching Game Boy Advance System Hub...")}
-                  className="h-11 w-11 rounded-full bg-[#f68d1f] hover:bg-[#e48600] border-2 border-[#21242e] flex items-center justify-center text-white text-lg font-black shadow-md transition-transform active:scale-95"
-                >
-                  ➔
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* 3. MAIN BODY GRID: Left Rotated Tabs + 2-Column Content Split */}
-          <div className="flex flex-col md:flex-row gap-3">
-            
-            {/* Left Rotated Section Rail */}
-            <div className="hidden md:flex flex-col gap-1.5 w-7 shrink-0 pt-1">
-              {[
-                { label: "TOP TEN", bg: "bg-[#21242e] text-[#9fbee7]" },
-                { label: "RENTALS", bg: "bg-[#21242e] text-[#ecab37]" },
-                { label: "CHOICE", bg: "bg-[#21242e] text-[#f68d1f]" },
-                { label: "ESRB", bg: "bg-[#21242e] text-white" },
-              ].map((tab, idx) => (
-                <div
-                  key={idx}
-                  className={`${tab.bg} py-3 px-0.5 text-[9px] font-black tracking-widest text-center border-l-2 border-t-2 border-[#3d4f97] cursor-pointer hover:opacity-90 writing-vertical`}
-                >
-                  {tab.label}
-                </div>
-              ))}
-            </div>
-
-            {/* Center Content Column (2/3 Width) */}
-            <div className="flex-1 space-y-3 min-w-0">
-              
-              {/* SECTION A: Official News */}
-              <div className="beveled-plate bg-[#8ba1d4] p-2 space-y-1.5">
-                <div className="bg-[#7a8aba] border-b border-[#3d4f97] px-2 py-1 flex items-center justify-between text-xs font-black uppercase text-[#21242e]">
-                  <span>≡ OFFICIAL NEWS & ANNOUNCEMENTS</span>
-                  <span className="text-[10px] text-[#3d4f97]">UPDATED DAILY</span>
-                </div>
-
-                <div className="space-y-1">
-                  {newsItems.map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="recessed-inset bg-[#dedede] p-2 flex items-center justify-between gap-2 hover:bg-white transition-colors"
-                    >
-                      <div className="flex items-center gap-2 min-w-0">
-                        <span className="bg-[#21242e] text-white px-1.5 py-0.5 text-[9px] font-black shrink-0">
-                          {item.category}
-                        </span>
-                        <a
-                          href={item.url}
-                          className="text-xs font-extrabold text-[#3d4f97] hover:text-[#e60012] truncate"
-                        >
-                          {item.title}
-                        </a>
-                      </div>
-
-                      <div className="flex items-center gap-2 shrink-0">
-                        <span className="text-[10px] font-bold text-[#60619c] hidden sm:inline">
-                          {item.date}
-                        </span>
-                        <div className="h-4 w-4 rounded-xs bg-[#f68d1f] flex items-center justify-center text-white text-[10px] font-black">
-                          ›
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* SECTION B: Featured Sites 2x2 Grid */}
-              <div className="beveled-plate bg-[#8ba1d4] p-2 space-y-1.5">
-                <div className="bg-[#7a8aba] border-b border-[#3d4f97] px-2 py-1 text-xs font-black uppercase text-[#21242e]">
-                  ≡ FEATURED OFFICIAL NETWORK SITES
-                </div>
-
-                <div className="grid grid-cols-2 gap-2">
-                  {featuredSites.map((site, idx) => (
-                    <a
-                      key={idx}
-                      href={`https://${site.url}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="halftone-carbon border-2 border-[#3d4f97] p-1.5 flex items-center gap-2.5 group hover:border-[#f68d1f] transition-all"
-                    >
-                      <div className="relative h-11 w-16 shrink-0 border border-[#9fbee7] bg-[#7a8aba] overflow-hidden">
-                        <Image
-                          src={site.image}
-                          alt={site.name}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform"
-                        />
-                      </div>
-                      <div className="min-w-0">
-                        <span className="block text-xs font-black text-white group-hover:text-[#ecab37] truncate">
-                          {site.name}
-                        </span>
-                        <span className="text-[10px] font-mono text-[#9fbee7] truncate block">
-                          {site.url}
-                        </span>
-                      </div>
-                    </a>
-                  ))}
-                </div>
-              </div>
-
-              {/* SECTION C: My-Link Quick Connections */}
-              <div className="beveled-plate bg-[#8ba1d4] p-2 space-y-1.5">
-                <div className="bg-[#7a8aba] border-b border-[#3d4f97] px-2 py-1 text-xs font-black uppercase text-[#21242e]">
-                  ≡ DEVELOPER PROFILE & CONNECTIONS
-                </div>
-
-                <div className="grid sm:grid-cols-2 gap-2">
-                  {profileLinks.map((link, idx) => (
-                    <a
-                      key={idx}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-white border-2 border-[#3d4f97] p-2 flex items-center justify-between hover:bg-[#dedede] transition-colors"
-                    >
-                      <div>
-                        <span className="block text-xs font-black text-[#21242e]">
-                          {link.name}
-                        </span>
-                        <span className="text-[10px] text-[#60619c] font-semibold">
-                          {link.desc}
-                        </span>
-                      </div>
-                      <span className="bg-[#ecab37] text-[#21242e] border border-[#21242e] px-1.5 py-0.5 text-[9px] font-black">
-                        {link.badge}
-                      </span>
-                    </a>
-                  ))}
-                </div>
-              </div>
-
-            </div>
-
-            {/* Right Action Rail (1/3 Width) */}
-            <div className="w-full md:w-64 space-y-3 shrink-0">
-              
-              {/* Right Action Buttons Slabs */}
-              <div className="space-y-1.5">
-                {[
-                  { label: "MY-LINK MEMBER LOGIN", icon: "🔑", bg: "hover:bg-[#3d4f97]" },
-                  { label: "NSIDER NEWSLETTER", icon: "✉️", bg: "hover:bg-[#3d4f97]" },
-                  { label: "DOWNLOAD CENTER", icon: "💾", bg: "hover:bg-[#3d4f97]" },
-                  { label: "TECH SUPPORT & FAQ", icon: "❓", bg: "hover:bg-[#3d4f97]" },
-                ].map((btn, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => alert(`Opening ${btn.label}...`)}
-                    className={`w-full halftone-carbon text-white border-2 border-[#3d4f97] px-3 py-2 text-xs font-black uppercase tracking-wider flex items-center justify-between ${btn.bg} active:translate-y-0.5 transition-all`}
-                  >
-                    <span className="flex items-center gap-2">
-                      <span>{btn.icon}</span>
-                      <span>{btn.label}</span>
-                    </span>
-                    <span className="text-[#f68d1f]">➔</span>
-                  </button>
-                ))}
-              </div>
-
-              {/* Player's Poll Module */}
-              <div className="beveled-plate bg-[#8ba1d4] p-3 space-y-2">
-                <div className="bg-[#ecab37] border border-[#21242e] px-2 py-0.5 text-[11px] font-black uppercase text-[#21242e]">
-                  POLL: NINTENDO SYSTEM CHOICE
-                </div>
-
-                <p className="text-xs font-extrabold text-[#21242e] leading-snug">
-                  Which system are you spending the most game time on this month?
-                </p>
-
-                <div className="space-y-1.5 pt-1">
-                  {[
-                    { id: "GBA", label: "Game Boy Advance (32-Bit)" },
-                    { id: "N64", label: "Nintendo 64" },
-                    { id: "NGC", label: "Nintendo GameCube" },
-                  ].map((option) => (
-                    <label
-                      key={option.id}
-                      className="flex items-center gap-2 text-xs font-bold text-[#21242e] cursor-pointer"
-                    >
-                      <input
-                        type="radio"
-                        name="poll"
-                        value={option.id}
-                        checked={pollChoice === option.id}
-                        onChange={(e) => setPollChoice(e.target.value)}
-                        className="accent-[#f68d1f]"
-                      />
-                      <span>{option.label}</span>
-                    </label>
-                  ))}
-                </div>
-
-                <button
-                  onClick={() => setPollSubmitted(true)}
-                  className="w-full beveled-chip bg-[#f68d1f] hover:bg-[#e48600] text-white py-1.5 text-xs font-black uppercase tracking-wider mt-2 shadow-sm"
-                >
-                  {pollSubmitted ? "VOTE RECORDED! ✓" : "SUBMIT VOTE"}
-                </button>
-              </div>
-
-              {/* "What Is — Game Finder" Info Box */}
-              <div className="bg-white border-2 border-[#3d4f97] p-3 space-y-1.5">
-                <div className="bg-[#ecab37] border border-[#21242e] px-2 py-0.5 text-[10px] font-black uppercase text-[#21242e]">
-                  WHAT IS GAME FINDER?
-                </div>
-                <p className="text-xs font-bold text-[#21242e] leading-relaxed">
-                  Search over 500+ official Nintendo 64 and Game Boy Advance titles by genre, release date, and ESRB rating.
-                </p>
-              </div>
-
-              {/* Side Promo Card */}
-              <div className="bg-[#acace7] border-2 border-[#3d4f97] p-3 text-center space-y-2">
-                <span className="text-[10px] font-black uppercase text-[#e60012] bg-white border border-[#e60012] px-2 py-0.5 inline-block">
-                  RECOMMENDED HARDWARE
-                </span>
-                <h4 className="box-art-title text-xl leading-none">
-                  NINTENDO 64
-                </h4>
-                <p className="text-[11px] font-extrabold text-[#21242e]">
-                  Experience revolutionary 3D gaming with 4-player multiplayer action built-in.
-                </p>
-              </div>
-
-            </div>
-
-          </div>
-
+          <span className="text-base font-bold tracking-tight text-[#191f28]">
+            홍길동의 프로필
+          </span>
         </div>
 
-        {/* FOOTER BAR: Carbon Chamfered Slab */}
-        <footer className="mt-2 halftone-carbon border-2 border-[#3d4f97] p-3 sm:p-4 text-white flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-          
-          <div className="space-y-1">
-            <p className="text-[11px] font-mono text-[#9fbee7]">
-              © 1997–2001 Nintendo / My-Link. All Rights Reserved.
-            </p>
-            <p className="text-[10px] text-[#8ba1d4]">
-              Nintendo 64, Game Boy Advance, and Nintendo GameCube are trademarks of Nintendo.
-            </p>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleLike}
+            className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold transition-all ${
+              liked
+                ? "bg-[#f04452]/10 text-[#f04452]"
+                : "bg-[#f2f4f6] text-[#4e5968] hover:bg-[#e5e8eb]"
+            }`}
+          >
+            <span>❤️</span>
+            <span>{likeCount}</span>
+          </button>
+
+          <button
+            onClick={handleCopyEmail}
+            className="rounded-full bg-[#e8f3ff] px-3 py-1 text-xs font-semibold text-[#3182f6] hover:bg-[#3182f6]/15 transition-colors"
+          >
+            {copiedEmail ? "복사완료!" : "이메일 공유"}
+          </button>
+        </div>
+      </header>
+
+      {/* Main Container */}
+      <main className="mx-auto max-w-xl px-4 pt-4 space-y-4">
+        
+        {/* Profile Main Card */}
+        <section className="overflow-hidden rounded-[24px] bg-white p-6 shadow-sm border border-[#e5e8eb]">
+          <div className="flex items-start justify-between gap-4">
+            
+            {/* Avatar & Online Badge */}
+            <div className="relative">
+              <div className="relative h-20 w-20 overflow-hidden rounded-[20px] bg-[#f2f4f6] border border-[#e5e8eb]">
+                <Image
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80"
+                  alt="홍길동 프로필 이미지"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="absolute -bottom-1 -right-1 flex items-center gap-1 rounded-full bg-[#3182f6] px-2 py-0.5 text-[11px] font-bold text-white shadow-sm">
+                <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
+                <span>구직 중</span>
+              </div>
+            </div>
+
+            {/* Profile Stats */}
+            <div className="flex items-center gap-4 text-right pt-1">
+              <div>
+                <span className="block text-lg font-bold text-[#191f28]">5년차</span>
+                <span className="text-xs text-[#8b95a1]">개발 경력</span>
+              </div>
+              <div className="h-6 w-px bg-[#e5e8eb]" />
+              <div>
+                <span className="block text-lg font-bold text-[#191f28]">40+</span>
+                <span className="text-xs text-[#8b95a1]">프로젝트</span>
+              </div>
+            </div>
           </div>
 
-          {/* ESRB Badges & Rating */}
-          <div className="flex items-center gap-3">
-            <div className="bg-[#ecab37] border border-[#21242e] px-2 py-1 text-[10px] font-black text-[#21242e] rounded-xs uppercase">
-              ESRB — PRIVACY CERTIFIED
+          {/* Profile Name & Tagline */}
+          <div className="mt-5">
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-bold text-[#191f28]">
+                홍길동
+              </h1>
+              <span className="rounded-full bg-[#e8f3ff] px-2.5 py-0.5 text-xs font-semibold text-[#3182f6]">
+                풀스택 엔지니어
+              </span>
             </div>
-            <div className="bg-white border-2 border-[#21242e] px-2 py-0.5 font-black text-sm text-[#21242e]">
-              EVERYONE [E]
+
+            <p className="mt-2 text-base text-[#4e5968] leading-relaxed">
+              사용자 경험을 최우선으로 생각하는 프론트엔드 중심 개발자예요. 복잡한 문제를 깔끔한 코드로 풀어내는 일에 보람을 느껴요.
+            </p>
+
+            {/* Meta Tags */}
+            <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-medium text-[#6b7684]">
+              <span className="rounded-md bg-[#f2f4f6] px-2.5 py-1 text-[#4e5968]">
+                📍 서울특별시
+              </span>
+              <span className="rounded-md bg-[#f2f4f6] px-2.5 py-1 text-[#4e5968]">
+                💼 외주 & 이직 협의 가능
+              </span>
+              <span className="rounded-md bg-[#f2f4f6] px-2.5 py-1 text-[#4e5968]">
+                ✉️ gildong@example.com
+              </span>
             </div>
           </div>
-        </footer>
+        </section>
 
+        {/* TDS Segmented Control Navigation Tabs */}
+        <section className="rounded-full bg-[#e5e8eb] p-1 flex items-center justify-between">
+          {[
+            { id: "links", label: "주요 링크" },
+            { id: "projects", label: "프로젝트" },
+            { id: "about", label: "소개·스택" },
+            { id: "contact", label: "문의하기" },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as typeof activeTab)}
+              className={`flex-1 rounded-full py-2 text-xs font-bold transition-all text-center ${
+                activeTab === tab.id
+                  ? "bg-white text-[#191f28] shadow-sm"
+                  : "text-[#6b7684] hover:text-[#191f28]"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </section>
+
+        {/* TAB 1: Links (TDS ListRows) */}
+        {activeTab === "links" && (
+          <section className="rounded-[24px] bg-white p-2 shadow-sm border border-[#e5e8eb] divide-y divide-[#f2f4f6]">
+            {links.map((link, idx) => (
+              <a
+                key={idx}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between p-3.5 hover:bg-[#f9fafb] rounded-[16px] transition-colors"
+              >
+                <div className="flex items-center gap-3.5 min-w-0">
+                  <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] ${link.accentBg} text-lg font-bold shadow-xs`}>
+                    {link.icon}
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-base font-bold text-[#191f28] truncate">
+                        {link.title}
+                      </h3>
+                      <span className={`rounded-md px-1.5 py-0.5 text-[10px] font-bold ${link.accentBg} ${link.accentText}`}>
+                        {link.badge}
+                      </span>
+                    </div>
+                    <p className="mt-0.5 text-xs text-[#6b7684] truncate">
+                      {link.subtitle}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center text-[#b0b8c1] group-hover:text-[#3182f6] group-hover:translate-x-0.5 transition-all">
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </a>
+            ))}
+          </section>
+        )}
+
+        {/* TAB 2: Projects (TDS Product Cards) */}
+        {activeTab === "projects" && (
+          <section className="space-y-3">
+            {projects.map((proj, idx) => (
+              <div
+                key={idx}
+                className="overflow-hidden rounded-[24px] bg-white p-4 shadow-sm border border-[#e5e8eb]"
+              >
+                <div className="relative h-44 w-full overflow-hidden rounded-[16px] bg-[#f2f4f6]">
+                  <Image
+                    src={proj.image}
+                    alt={proj.title}
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute top-3 left-3 rounded-full bg-[#191f28]/80 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur-md">
+                    {proj.category}
+                  </div>
+                </div>
+
+                <div className="mt-3.5">
+                  <h3 className="text-lg font-bold text-[#191f28]">
+                    {proj.title}
+                  </h3>
+                  <p className="mt-1 text-xs text-[#4e5968] leading-relaxed">
+                    {proj.description}
+                  </p>
+
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {proj.tags.map((tag, tIdx) => (
+                      <span
+                        key={tIdx}
+                        className="rounded-md bg-[#f2f4f6] px-2 py-0.5 text-[11px] font-medium text-[#4e5968]"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </section>
+        )}
+
+        {/* TAB 3: About & Skills */}
+        {activeTab === "about" && (
+          <section className="space-y-3">
+            <div className="rounded-[24px] bg-white p-5 shadow-sm border border-[#e5e8eb]">
+              <h3 className="text-base font-bold text-[#191f28] flex items-center gap-1.5">
+                <span>👋</span> 안녕하세요!
+              </h3>
+              <p className="mt-2 text-sm text-[#4e5968] leading-relaxed">
+                저는 웹과 모바일 환경 모두에서 빠르고 직관적인 인터페이스를 구현하는 것을 좋아해요. 토스 디자인 시스템(TDS)처럼 사용자 부담을 줄이고 핵심 가치를 명확히 전달하는 서비스를 지향해요.
+              </p>
+            </div>
+
+            <div className="rounded-[24px] bg-white p-5 shadow-sm border border-[#e5e8eb]">
+              <h3 className="text-base font-bold text-[#191f28] mb-3">
+                보유 기술 스택
+              </h3>
+              <div className="grid grid-cols-2 gap-2">
+                {skills.map((skill, sIdx) => (
+                  <div
+                    key={sIdx}
+                    className="rounded-[16px] bg-[#f9fafb] p-3 border border-[#e5e8eb]"
+                  >
+                    <span className="block text-xs font-bold text-[#191f28]">
+                      {skill.name}
+                    </span>
+                    <div className="mt-1 flex items-center justify-between text-[11px]">
+                      <span className="text-[#8b95a1]">{skill.exp}</span>
+                      <span className="rounded-md bg-[#e8f3ff] px-1.5 py-0.5 font-semibold text-[#3182f6]">
+                        {skill.level}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* TAB 4: Contact Form */}
+        {activeTab === "contact" && (
+          <section className="rounded-[24px] bg-white p-5 shadow-sm border border-[#e5e8eb]">
+            <h3 className="text-lg font-bold text-[#191f28] mb-1">
+              메시지 남기기 ✉️
+            </h3>
+            <p className="text-xs text-[#6b7684] mb-5">
+              궁금한 내용이나 프로젝트 문의가 있으시다면 편하게 남겨주세요.
+            </p>
+
+            <form onSubmit={(e) => { e.preventDefault(); alert("메시지가 성공적으로 전달되었어요!"); }} className="space-y-3.5">
+              <div>
+                <label className="block text-xs font-semibold text-[#333d4b] mb-1">
+                  성함 / 회사명
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="성함을 입력해 주세요"
+                  className="w-full rounded-[12px] bg-[#f2f4f6] px-3.5 py-3 text-sm text-[#191f28] placeholder-[#8b95a1] outline-none border border-transparent focus:border-[#3182f6] focus:bg-white transition-all"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-[#333d4b] mb-1">
+                  회신받을 이메일
+                </label>
+                <input
+                  type="email"
+                  required
+                  placeholder="example@toss.im"
+                  className="w-full rounded-[12px] bg-[#f2f4f6] px-3.5 py-3 text-sm text-[#191f28] placeholder-[#8b95a1] outline-none border border-transparent focus:border-[#3182f6] focus:bg-white transition-all"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-[#333d4b] mb-1">
+                  문의 내용
+                </label>
+                <textarea
+                  rows={4}
+                  required
+                  placeholder="문의하실 내용을 편하게 적어주세요."
+                  className="w-full rounded-[12px] bg-[#f2f4f6] px-3.5 py-3 text-sm text-[#191f28] placeholder-[#8b95a1] outline-none border border-transparent focus:border-[#3182f6] focus:bg-white transition-all resize-none"
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full rounded-[16px] bg-[#3182f6] py-3.5 text-sm font-bold text-white shadow-xs hover:bg-[#1b64da] transition-colors"
+              >
+                메시지 보내기
+              </button>
+            </form>
+          </section>
+        )}
+
+      </main>
+
+      {/* TDS Sticky Bottom CTA (56pt Height with Gradient Protection Mask) */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 p-4 bottom-cta-protection">
+        <div className="mx-auto max-w-xl">
+          <button
+            onClick={handleCopyEmail}
+            className="w-full h-14 rounded-[16px] bg-[#3182f6] hover:bg-[#1b64da] text-white font-bold text-base shadow-md transition-colors flex items-center justify-center gap-2"
+          >
+            <span>{copiedEmail ? "이메일 주소가 복사되었어요! ✓" : "홍길동과 커뮤니케이션하기"}</span>
+          </button>
+        </div>
       </div>
+
     </div>
   );
 }
