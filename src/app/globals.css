@@ -1,27 +1,116 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fefce8;
-  --foreground: #000000;
+  /* 2001 Nintendo Console Hardware Palette */
+  --canvas: #7a8aba;
+  --periwinkle: #8ba1d4;
+  --canvas-soft: #9fbee7;
+  --lavender: #acace7;
+  --ice: #c0d5e6;
+  --chrome-indigo: #3d4f97;
+  --muted-indigo: #60619c;
+  --platinum: #dedede;
+  --carbon: #21242e;
+  
+  --primary-red: #e60012;
+  --signal-orange: #f68d1f;
+  --amber-gold: #ecab37;
+  --nav-gold: #e48600;
+  
+  --background: #7a8aba;
+  --foreground: #21242e;
 }
 
 body {
-  background-color: var(--background);
+  background-color: var(--canvas);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
-  background-image: radial-gradient(#000000 1.2px, transparent 1.2px);
-  background-size: 24px 24px;
+  font-family: Arial, Helvetica, sans-serif;
+  background-image: 
+    linear-gradient(90deg, rgba(61, 79, 151, 0.15) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(61, 79, 151, 0.15) 1px, transparent 1px);
+  background-size: 16px 16px;
 }
 
-/* Custom scrollbar for Neobrutalism feel */
+/* Halftone Dot Matrix Pattern for Carbon Command Slabs */
+.halftone-carbon {
+  background-color: #21242e;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+
+/* Beveled Metal Plate - Hardware Look */
+.beveled-plate {
+  border-top: 2px solid rgba(255, 255, 255, 0.7);
+  border-left: 2px solid rgba(255, 255, 255, 0.5);
+  border-right: 2px solid #3d4f97;
+  border-bottom: 3px solid #3d4f97;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(33, 36, 46, 0.3);
+}
+
+/* Raised Chip Button Bevel */
+.beveled-chip {
+  border-top: 2px solid rgba(255, 255, 255, 0.8);
+  border-left: 1.5px solid rgba(255, 255, 255, 0.6);
+  border-right: 2px solid #21242e;
+  border-bottom: 2.5px solid #21242e;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.beveled-chip:active {
+  border-top: 2px solid #21242e;
+  border-left: 2px solid #21242e;
+  border-right: 1px solid rgba(255, 255, 255, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+  transform: translateY(1px);
+}
+
+/* Recessed Inset (List rows, inputs) */
+.recessed-inset {
+  border-top: 2px solid #3d4f97;
+  border-left: 2px solid #3d4f97;
+  border-right: 1px solid rgba(255, 255, 255, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: inset 1px 1px 3px rgba(33, 36, 46, 0.25);
+}
+
+/* Chamfered 45 Degree Cut Corner Panel Geometry */
+.chamfered-corner {
+  clip-path: polygon(
+    10px 0%, 
+    calc(100% - 10px) 0%, 
+    100% 10px, 
+    100% calc(100% - 10px), 
+    calc(100% - 10px) 100%, 
+    10px 10px, 
+    0% calc(100% - 10px), 
+    0% 10px
+  );
+}
+
+/* Outlined Box-Art Display Typography */
+.box-art-title {
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 
+    2px 2px 0px #21242e,
+    -2px -2px 0px #21242e,
+    2px -2px 0px #21242e,
+    -2px 2px 0px #21242e,
+    0px 3px 0px #21242e,
+    3px 0px 0px #21242e,
+    4px 4px 0px #3d4f97;
+}
+
+/* Custom retro scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 12px;
 }
 ::-webkit-scrollbar-track {
-  background: #fefce8;
-  border-left: 2px solid #000;
+  background: #7a8aba;
+  border-left: 2px solid #3d4f97;
 }
 ::-webkit-scrollbar-thumb {
-  background: #000;
-  border-radius: 0px;
+  background: #21242e;
+  border: 2px solid #8ba1d4;
 }

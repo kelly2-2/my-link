@@ -4,491 +4,508 @@ import { useState } from "react";
 import Image from "next/image";
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<"links" | "projects" | "about" | "contact">("links");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchCategory, setSearchCategory] = useState("All");
+  const [pollChoice, setPollChoice] = useState("GBA");
+  const [pollSubmitted, setPollSubmitted] = useState(false);
+  const [activeTab, setActiveTab] = useState<"news" | "games" | "systems" | "links">("news");
   const [copiedEmail, setCopiedEmail] = useState(false);
-  const [likeCount, setLikeCount] = useState(128);
-  const [liked, setLiked] = useState(false);
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText("gildong@example.com");
     setCopiedEmail(true);
-    setTimeout(() => setCopiedEmail(false), 2200);
+    setTimeout(() => setCopiedEmail(false), 2000);
   };
 
-  const handleLike = () => {
-    if (!liked) {
-      setLikeCount((prev) => prev + 1);
-      setLiked(true);
-    } else {
-      setLikeCount((prev) => prev - 1);
-      setLiked(false);
-    }
-  };
-
-  const links = [
+  const newsItems = [
     {
-      title: "GITHUB REPOSITORY",
-      displayUrl: "https://github.com/gildong-hong",
-      description: "오픈소스 및 개인 개발 프로젝트 코드 모음",
-      url: "https://github.com",
-      badge: "45 REPOS",
-      bg: "bg-yellow-300 hover:bg-yellow-400",
-      stickerBg: "bg-black text-yellow-300",
-      icon: (
-        <svg className="h-6 w-6 sm:h-7 sm:w-7" fill="currentColor" viewBox="0 0 24 24">
-          <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-        </svg>
-      ),
-    },
-    {
-      title: "TECH BLOG (VELOG)",
-      displayUrl: "https://velog.io/@gildong",
-      description: "개발 지식과 디버깅 기록을 공유하는 공간",
-      url: "https://velog.io",
-      badge: "WEEKLY",
-      bg: "bg-cyan-300 hover:bg-cyan-400",
-      stickerBg: "bg-black text-cyan-300",
-      icon: (
-        <svg className="h-6 w-6 sm:h-7 sm:w-7" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-        </svg>
-      ),
-    },
-    {
-      title: "LINKEDIN NETWORK",
-      displayUrl: "https://linkedin.com/in/gildong",
-      description: "커리어 및 글로벌 비즈니스 이력",
-      url: "https://linkedin.com",
-      badge: "CONNECT",
-      bg: "bg-pink-300 hover:bg-pink-400",
-      stickerBg: "bg-black text-pink-300",
-      icon: (
-        <svg className="h-6 w-6 sm:h-7 sm:w-7" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.6a1.64 1.64 0 1 0 0 3.28 1.64 1.64 0 0 0 0-3.28z"/>
-        </svg>
-      ),
-    },
-    {
-      title: "PORTFOLIO WEBSITE",
-      displayUrl: "https://gildong.dev/portfolio",
-      description: "인터랙티브 웹 앱 프로젝트 상세 모음",
+      title: "Game Boy Advance Launches Worldwide with Record Hits!",
+      category: "HARDWARE",
+      date: "JUN 2001",
       url: "#",
-      badge: "FEATURED 🔥",
-      bg: "bg-lime-300 hover:bg-lime-400",
-      stickerBg: "bg-black text-lime-300",
-      icon: (
-        <svg className="h-6 w-6 sm:h-7 sm:w-7" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
-        </svg>
-      ),
+    },
+    {
+      title: "Super Mario Advance: New Worlds & Classic Action Unveiled",
+      category: "GAMES",
+      date: "MAY 2001",
+      url: "#",
+    },
+    {
+      title: "Nintendo GameCube Official Hardware Specifications Released",
+      category: "SYSTEMS",
+      date: "MAY 2001",
+      url: "#",
+    },
+    {
+      title: "Pokémon Crystal Version Announced for Game Boy Color",
+      category: "ANNOUNCEMENT",
+      date: "APR 2001",
+      url: "#",
     },
   ];
 
-  const projects = [
+  const featuredSites = [
     {
-      title: "LINKCRAFT ⚡",
-      category: "FULL-STACK",
-      description: "네오브루탈리즘 감성의 나만의 링크 페이지를 3초 만에 생성하는 웹 플랫폼입니다.",
-      tags: ["Next.js 16", "Tailwind CSS", "TypeScript"],
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
-      color: "bg-yellow-200",
-      demoUrl: "https://example.com",
-      githubUrl: "https://github.com",
+      name: "Pokémon Official",
+      url: "www.pokemon.com",
+      image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
     },
     {
-      title: "SMART DASH 📊",
-      category: "SAAS APP",
-      description: "실시간 대용량 데이터 파이프라인을 시각화하는 고성능 브루탈리스트 대시보드입니다.",
-      tags: ["React 19", "WebSockets", "Recharts"],
-      image: "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?auto=format&fit=crop&w=800&q=80",
-      color: "bg-cyan-200",
-      demoUrl: "https://example.com",
-      githubUrl: "https://github.com",
+      name: "Zelda Universe",
+      url: "www.zelda.com",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=80",
     },
     {
-      title: "AI COPILOT 🤖",
-      category: "AI ENGINE",
-      description: "자연어 프롬프트를 직관적인 웹 인터페이스 컴포넌트로 자동 변환해주는 AI 코딩 도구입니다.",
-      tags: ["Next.js", "OpenAI API", "Tailwind v4"],
-      image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
-      color: "bg-pink-200",
-      demoUrl: "https://example.com",
-      githubUrl: "https://github.com",
+      name: "Mario World",
+      url: "www.mario.com",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+    },
+    {
+      name: "My-Link Hub",
+      url: "www.my-link.com",
+      image: "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?auto=format&fit=crop&w=400&q=80",
     },
   ];
 
-  const skills = [
-    { name: "React 19 / Next.js 16", level: "EXPERT ⚡", bg: "bg-yellow-300" },
-    { name: "TypeScript", level: "PRO 🎯", bg: "bg-cyan-300" },
-    { name: "Tailwind CSS v4", level: "NINJA 🥷", bg: "bg-pink-300" },
-    { name: "Node.js / Express", level: "ADVANCED 🚀", bg: "bg-lime-300" },
-    { name: "PostgreSQL & Prisma", level: "SKILLED 💾", bg: "bg-purple-300" },
-    { name: "Git & Docker Workflow", level: "READY 📦", bg: "bg-orange-300" },
+  const profileLinks = [
+    {
+      name: "GITHUB REPOSITORY",
+      desc: "45 Open Source & Personal Repos",
+      url: "https://github.com",
+      badge: "CODE",
+    },
+    {
+      name: "TECH BLOG (VELOG)",
+      desc: "Weekly Frontend & Hardware Notes",
+      url: "https://velog.io",
+      badge: "BLOG",
+    },
+    {
+      name: "LINKEDIN NETWORK",
+      desc: "Connect for Global Engineering",
+      url: "https://linkedin.com",
+      badge: "PRO",
+    },
+    {
+      name: "MY-LINK PORTFOLIO",
+      desc: "Interactive Console Apps & Demos",
+      url: "#",
+      badge: "STAR 🔥",
+    },
   ];
 
   return (
-    <div className="min-h-screen px-2.5 py-6 sm:px-6 sm:py-12 lg:px-8 text-black font-sans selection:bg-black selection:text-yellow-300">
-      
-      {/* Top Floating Neo-Stickers Header */}
-      <div className="mx-auto max-w-4xl mb-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-        <div className="inline-flex items-center justify-center gap-2 border-3 border-black bg-yellow-300 px-3.5 py-1.5 font-black text-xs sm:text-sm uppercase tracking-wider shadow-[3px_3px_0px_0px_#000] -rotate-1 self-start">
-          <span className="h-2.5 w-2.5 rounded-full bg-red-600 animate-pulse border border-black" />
-          <span>NEOBRUTALISM EDITION 💥</span>
-        </div>
-
-        <div className="flex items-center gap-2.5">
-          <button
-            onClick={handleLike}
-            className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 border-3 border-black px-3 py-1.5 text-xs sm:text-sm font-black uppercase shadow-[3px_3px_0px_0px_#000] transition-all active:translate-x-1 active:translate-y-1 active:shadow-none ${
-              liked ? "bg-pink-400 text-black" : "bg-white hover:bg-pink-200"
-            }`}
-          >
-            <span>👍 LIKES</span>
-            <span className="border-2 border-black bg-black text-white px-1.5 py-0.5 rounded-none text-xs">
-              {likeCount}
-            </span>
-          </button>
-
-          <button
-            onClick={handleCopyEmail}
-            className="flex-1 sm:flex-initial border-3 border-black bg-cyan-300 hover:bg-cyan-400 px-3 py-1.5 text-xs sm:text-sm font-black uppercase shadow-[3px_3px_0px_0px_#000] transition-all active:translate-x-1 active:translate-y-1 active:shadow-none text-center"
-          >
-            {copiedEmail ? "COPIED! 🎉" : "COPY EMAIL ✉️"}
-          </button>
-        </div>
-      </div>
-
-      {/* Main Neobrutalist Container */}
-      <main className="mx-auto max-w-4xl border-3 sm:border-4 border-black bg-white shadow-[6px_6px_0px_0px_#000] sm:shadow-[14px_14px_0px_0px_#000] rounded-none overflow-hidden">
+    <div className="min-h-screen bg-[#7a8aba] text-[#21242e] font-sans p-2 sm:p-4 lg:p-6 select-none">
+      {/* Outer Console Frame Container */}
+      <div className="mx-auto max-w-[840px]">
         
-        {/* Banner Cover */}
-        <div className="relative h-36 sm:h-60 w-full border-b-3 sm:border-b-4 border-black bg-yellow-300 overflow-hidden">
-          <Image
-            src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1600&q=80"
-            alt="네오브루탈리즘 커버 아트"
-            fill
-            priority
-            className="object-cover object-center opacity-90 filter contrast-125"
-          />
-          <div className="absolute inset-0 bg-yellow-400/20 mix-blend-multiply" />
+        {/* MASTHEAD: Mario Mascot + Speech Bubble & Search Module */}
+        <header className="mb-2 flex flex-col sm:flex-row items-center justify-between gap-3 px-2">
           
-          {/* Cover Decorative Sticker Labels */}
-          <div className="absolute top-3 left-3 border-2 sm:border-3 border-black bg-black px-2.5 py-0.5 sm:px-3 sm:py-1 font-black text-[10px] sm:text-xs text-yellow-300 shadow-[2px_2px_0px_0px_#fff] rotate-2">
-            HELLO WORLD! 👋
-          </div>
-          <div className="absolute bottom-3 right-3 border-2 sm:border-3 border-black bg-pink-400 px-2.5 py-0.5 sm:px-3 sm:py-1 font-black text-[10px] sm:text-xs text-black shadow-[2px_2px_0px_0px_#000] -rotate-2">
-            FULL-STACK DEV 🚀
-          </div>
-        </div>
+          {/* Mario Mascot & Speech Bubble */}
+          <div className="flex items-center gap-3">
+            {/* Mario Mascot Graphic Icon */}
+            <div className="relative h-14 w-14 sm:h-16 sm:w-16 shrink-0 beveled-plate bg-[#dedede] rounded-full p-1 overflow-hidden shadow-md">
+              <Image
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80"
+                alt="Mario Mascot"
+                fill
+                className="object-cover rounded-full"
+              />
+            </div>
 
-        {/* Profile Card Header Info */}
-        <div className="p-4 sm:p-10 bg-white">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between -mt-14 sm:-mt-24 mb-6 gap-4 sm:gap-6">
+            {/* Welcome Speech Bubble */}
+            <div className="relative border-2 border-[#3d4f97] bg-white px-3.5 py-1.5 rounded-2xl shadow-sm">
+              <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-0 h-0 border-y-[6px] border-y-transparent border-r-[8px] border-r-[#3d4f97]" />
+              <p className="text-xs font-bold text-[#21242e]">
+                Welcome to <span className="font-extrabold text-[#e60012]">Nintendo.com</span>! 🎮
+              </p>
+              <p className="text-[10px] text-[#3d4f97] font-semibold">
+                Circa 2001 Console Hardware Edition
+              </p>
+            </div>
+          </div>
+
+          {/* Search Input Module */}
+          <div className="flex items-center gap-1.5 w-full sm:w-auto">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search Games, Systems..."
+              className="recessed-inset bg-white px-2.5 py-1 text-xs text-[#21242e] placeholder-[#60619c] font-medium outline-none w-full sm:w-44"
+            />
+            <select
+              value={searchCategory}
+              onChange={(e) => setSearchCategory(e.target.value)}
+              className="border border-[#21242e] bg-white px-2 py-1 text-xs font-bold text-[#21242e] outline-none"
+            >
+              <option value="All">All</option>
+              <option value="Games">Games</option>
+              <option value="Systems">Systems</option>
+              <option value="CodeBank">Code Bank</option>
+            </select>
+            <button
+              onClick={() => alert(`Searching for: ${searchQuery}`)}
+              className="beveled-chip bg-[#ecab37] hover:bg-[#e48600] text-[#21242e] px-3 py-1 text-xs font-black uppercase tracking-wider"
+            >
+              GO
+            </button>
+          </div>
+        </header>
+
+        {/* MAIN CONSOLE FACEPLATE */}
+        <div className="beveled-plate bg-[#7a8aba] p-2 sm:p-3 space-y-2">
+
+          {/* 1. DUAL NAVIGATION LAYER */}
+          {/* Primary Carbon Command Nav Bar */}
+          <div className="halftone-carbon border-b-2 border-[#3d4f97] p-2 flex flex-col md:flex-row items-center justify-between gap-2.5">
             
-            {/* Avatar Photo Frame */}
-            <div className="relative self-start">
-              <div className="relative h-28 w-28 sm:h-40 sm:w-40 border-3 sm:border-4 border-black bg-yellow-300 shadow-[4px_4px_0px_0px_#000] sm:shadow-[6px_6px_0px_0px_#000] overflow-hidden">
-                <Image
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80"
-                  alt="홍길동 네오브루탈리즘 프로필"
-                  fill
-                  className="object-cover"
-                />
+            {/* Nintendo Racetrack Logo Pill */}
+            <div className="flex items-center gap-3">
+              <div className="bg-white px-3.5 py-1 rounded-full border-2 border-[#e60012] shadow-sm shrink-0">
+                <span className="font-black text-sm tracking-tight text-[#e60012] italic">
+                  Nintendo<span className="text-[10px] not-italic ml-0.5">®</span>
+                </span>
               </div>
-              <div className="absolute -bottom-2.5 -right-2.5 border-2 sm:border-3 border-black bg-lime-400 px-2 py-0.5 sm:px-2.5 sm:py-1 text-[10px] sm:text-xs font-black uppercase text-black shadow-[2px_2px_0px_0px_#000] rotate-3">
-                AVAILABLE ⚡
-              </div>
+
+              {/* Primary Nav Menu Words (Nav Gold) */}
+              <nav className="flex items-center gap-3 sm:gap-5">
+                {["GAMES", "SYSTEMS", "NEWS", "NSIDER", "DOWNLOADS"].map((menu) => (
+                  <button
+                    key={menu}
+                    onClick={() => setActiveTab(menu.toLowerCase() as typeof activeTab)}
+                    className="text-xs font-extrabold uppercase tracking-wider text-[#e48600] hover:text-[#f68d1f] transition-colors"
+                  >
+                    {menu}
+                  </button>
+                ))}
+              </nav>
             </div>
 
-            {/* Brutalist Stat Cards */}
-            <div className="grid grid-cols-3 gap-2 sm:gap-3 w-full sm:w-auto">
-              <div className="border-2 sm:border-3 border-black bg-yellow-300 p-2 sm:p-3 text-center shadow-[3px_3px_0px_0px_#000] sm:shadow-[4px_4px_0px_0px_#000] -rotate-1">
-                <span className="block text-base sm:text-2xl font-black">5+ YRS</span>
-                <span className="text-[9px] sm:text-xs font-bold uppercase tracking-wider block truncate">EXP</span>
-              </div>
-              <div className="border-2 sm:border-3 border-black bg-pink-300 p-2 sm:p-3 text-center shadow-[3px_3px_0px_0px_#000] sm:shadow-[4px_4px_0px_0px_#000] rotate-1">
-                <span className="block text-base sm:text-2xl font-black">40+</span>
-                <span className="text-[9px] sm:text-xs font-bold uppercase tracking-wider block truncate">PROJ</span>
-              </div>
-              <div className="border-2 sm:border-3 border-black bg-cyan-300 p-2 sm:p-3 text-center shadow-[3px_3px_0px_0px_#000] sm:shadow-[4px_4px_0px_0px_#000] -rotate-1">
-                <span className="block text-base sm:text-2xl font-black">100%</span>
-                <span className="text-[9px] sm:text-xs font-bold uppercase tracking-wider block truncate">CODE</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Name & Tagline */}
-          <div className="space-y-3">
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-              <h1 className="text-2xl sm:text-5xl font-black tracking-tight uppercase text-black break-words">
-                홍길동 <span className="text-base sm:text-3xl text-slate-700 font-bold">(GILDONG HONG)</span>
-              </h1>
-              <span className="border-2 sm:border-3 border-black bg-purple-300 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs font-black uppercase shadow-[2px_2px_0px_0px_#000] sm:shadow-[3px_3px_0px_0px_#000]">
-                SENIOR ENGINEER
-              </span>
-            </div>
-            
-            <p className="text-sm sm:text-lg font-bold leading-relaxed text-black border-l-3 sm:border-l-4 border-black pl-3 sm:pl-4 py-1 bg-yellow-100/60">
-              ⚡ 사용자 경험을 압도하는 강렬한 UI/UX와 확장성 높은 코드를 구현하는 개발자입니다. 직관적이고 도전적인 웹 서비스를 좋아합니다.
-            </p>
-
-            {/* Quick Meta Badges */}
-            <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-2">
-              <span className="border-2 border-black bg-white px-2.5 py-1 text-[11px] sm:text-xs font-extrabold uppercase shadow-[2px_2px_0px_0px_#000]">
-                📍 SEOUL, KOREA
-              </span>
-              <span className="border-2 border-black bg-white px-2.5 py-1 text-[11px] sm:text-xs font-extrabold uppercase shadow-[2px_2px_0px_0px_#000]">
-                💼 FREELANCE & FULL-TIME
-              </span>
-              <span className="border-2 border-black bg-white px-2.5 py-1 text-[11px] sm:text-xs font-extrabold uppercase shadow-[2px_2px_0px_0px_#000] max-w-full break-all">
-                ✉️ GILDONG@EXAMPLE.COM
-              </span>
+            {/* Utility Chips (Amber) */}
+            <div className="flex items-center gap-2">
+              <button className="beveled-chip bg-[#ecab37] text-[#21242e] px-2.5 py-1 text-[11px] font-black uppercase tracking-wider flex items-center gap-1">
+                <span>🔑</span> CODE BANK
+              </button>
+              <button className="beveled-chip bg-[#ecab37] text-[#21242e] px-2.5 py-1 text-[11px] font-black uppercase tracking-wider flex items-center gap-1">
+                <span>🎯</span> GAME FINDER
+              </button>
             </div>
           </div>
 
-          {/* Brutalist Navigation Tabs */}
-          <div className="mt-8 sm:mt-10 border-b-3 sm:border-b-4 border-black pb-4">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
-              {[
-                { id: "links", label: "🔗 LINKS", color: "bg-yellow-300 hover:bg-yellow-400" },
-                { id: "projects", label: "⚡ PROJECTS", color: "bg-pink-300 hover:bg-pink-400" },
-                { id: "about", label: "🧠 ABOUT", color: "bg-lime-300 hover:bg-lime-400" },
-                { id: "contact", label: "✉️ CONTACT", color: "bg-cyan-300 hover:bg-cyan-400" },
-              ].map((tab) => (
+          {/* Secondary Subnav Strip (Pale Sky) */}
+          <div className="bg-[#9fbee7] border-b-2 border-[#3d4f97] px-3 py-1 flex items-center justify-between text-[11px] font-bold text-[#21242e] overflow-x-auto whitespace-nowrap scrollbar-none">
+            <div className="flex items-center gap-3">
+              <span className="hover:underline cursor-pointer">PARENTS</span>
+              <span>|</span>
+              <span className="hover:underline cursor-pointer">CUSTOMER SERVICE</span>
+              <span>|</span>
+              <span className="hover:underline cursor-pointer">CORPORATE</span>
+              <span>|</span>
+              <span className="hover:underline cursor-pointer">GLOBAL</span>
+              <span>|</span>
+              <span className="hover:underline cursor-pointer">PRIVACY</span>
+              <span>|</span>
+              <span className="hover:underline cursor-pointer">MY-LINK STORE</span>
+            </div>
+            <button
+              onClick={handleCopyEmail}
+              className="text-[#e60012] hover:underline font-extrabold ml-4"
+            >
+              {copiedEmail ? "EMAIL COPIED! ✓" : "CONTACT US ✉️"}
+            </button>
+          </div>
+
+          {/* 2. HERO FIELD PANEL */}
+          <div className="relative border-2 border-[#3d4f97] bg-[#acace7] p-4 sm:p-6 overflow-hidden shadow-inner">
+            {/* Background Product Image */}
+            <Image
+              src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80"
+              alt="Hero Box Art"
+              fill
+              priority
+              className="object-cover opacity-30 mix-blend-multiply filter contrast-125"
+            />
+
+            <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="max-w-md">
+                <span className="inline-block bg-[#f68d1f] text-white px-2 py-0.5 text-[10px] font-black uppercase tracking-widest mb-1 shadow-sm">
+                  NEW SYSTEM RELEASE
+                </span>
+                <h1 className="box-art-title text-3xl sm:text-4xl tracking-tight leading-none mb-2">
+                  GAME BOY ADVANCE & MY-LINK
+                </h1>
+                <p className="text-xs sm:text-sm font-bold text-[#21242e] leading-snug drop-shadow-sm">
+                  Gorgeous 32-bit graphics, stereo sound, and full backward compatibility. Experience portable power redefined!
+                </p>
+              </div>
+
+              {/* Forward Action Disc Button */}
+              <div className="flex items-center gap-3">
+                <div className="text-right hidden sm:block">
+                  <span className="block text-[11px] font-black text-[#21242e] uppercase">LEARN MORE</span>
+                  <span className="text-[10px] text-[#3d4f97] font-extrabold uppercase">GET SYSTEM INFO</span>
+                </div>
                 <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as typeof activeTab)}
-                  className={`border-2 sm:border-3 border-black py-2.5 sm:py-3 px-2 sm:px-4 text-center text-xs sm:text-sm font-black uppercase shadow-[3px_3px_0px_0px_#000] sm:shadow-[4px_4px_0px_0px_#000] transition-all ${
-                    activeTab === tab.id
-                      ? "bg-black text-white translate-x-1 translate-y-1 shadow-none"
-                      : `${tab.color} text-black active:translate-x-1 active:translate-y-1 active:shadow-none`
-                  }`}
+                  onClick={() => alert("Launching Game Boy Advance System Hub...")}
+                  className="h-11 w-11 rounded-full bg-[#f68d1f] hover:bg-[#e48600] border-2 border-[#21242e] flex items-center justify-center text-white text-lg font-black shadow-md transition-transform active:scale-95"
+                >
+                  ➔
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* 3. MAIN BODY GRID: Left Rotated Tabs + 2-Column Content Split */}
+          <div className="flex flex-col md:flex-row gap-3">
+            
+            {/* Left Rotated Section Rail */}
+            <div className="hidden md:flex flex-col gap-1.5 w-7 shrink-0 pt-1">
+              {[
+                { label: "TOP TEN", bg: "bg-[#21242e] text-[#9fbee7]" },
+                { label: "RENTALS", bg: "bg-[#21242e] text-[#ecab37]" },
+                { label: "CHOICE", bg: "bg-[#21242e] text-[#f68d1f]" },
+                { label: "ESRB", bg: "bg-[#21242e] text-white" },
+              ].map((tab, idx) => (
+                <div
+                  key={idx}
+                  className={`${tab.bg} py-3 px-0.5 text-[9px] font-black tracking-widest text-center border-l-2 border-t-2 border-[#3d4f97] cursor-pointer hover:opacity-90 writing-vertical`}
                 >
                   {tab.label}
-                </button>
+                </div>
               ))}
             </div>
-          </div>
 
-          {/* Tab Content Display */}
-          <div className="mt-6 sm:mt-8">
-            
-            {/* TAB 1: Links */}
-            {activeTab === "links" && (
-              <div className="grid gap-4 sm:gap-5 sm:grid-cols-2">
-                {links.map((link, idx) => (
-                  <a
-                    key={idx}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`group relative flex flex-col xs:flex-row items-start xs:items-center gap-3 sm:gap-4 border-3 border-black ${link.bg} p-3.5 sm:p-5 shadow-[4px_4px_0px_0px_#000] sm:shadow-[5px_5px_0px_0px_#000] transition-all hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_#000] active:translate-x-1 active:translate-y-1 active:shadow-none overflow-hidden`}
-                  >
-                    {/* Icon + Mobile Arrow Row */}
-                    <div className="flex items-center justify-between w-full xs:w-auto">
-                      <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center border-2 sm:border-3 border-black bg-white shadow-[2px_2px_0px_0px_#000]">
-                        {link.icon}
-                      </div>
-                      <span className="xs:hidden text-base font-black group-hover:translate-x-1 transition-transform">
-                        ➔
-                      </span>
-                    </div>
+            {/* Center Content Column (2/3 Width) */}
+            <div className="flex-1 space-y-3 min-w-0">
+              
+              {/* SECTION A: Official News */}
+              <div className="beveled-plate bg-[#8ba1d4] p-2 space-y-1.5">
+                <div className="bg-[#7a8aba] border-b border-[#3d4f97] px-2 py-1 flex items-center justify-between text-xs font-black uppercase text-[#21242e]">
+                  <span>≡ OFFICIAL NEWS & ANNOUNCEMENTS</span>
+                  <span className="text-[10px] text-[#3d4f97]">UPDATED DAILY</span>
+                </div>
 
-                    {/* Content Details */}
-                    <div className="flex-1 min-w-0 w-full">
-                      <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
-                        <h3 className="text-sm sm:text-base font-black uppercase text-black truncate max-w-[calc(100%-80px)]">
-                          {link.title}
-                        </h3>
-                        <span className={`border border-black ${link.stickerBg} px-1.5 py-0.5 text-[9px] sm:text-[10px] font-black uppercase shadow-[1px_1px_0px_0px_#000] shrink-0`}>
-                          {link.badge}
+                <div className="space-y-1">
+                  {newsItems.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="recessed-inset bg-[#dedede] p-2 flex items-center justify-between gap-2 hover:bg-white transition-colors"
+                    >
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="bg-[#21242e] text-white px-1.5 py-0.5 text-[9px] font-black shrink-0">
+                          {item.category}
                         </span>
+                        <a
+                          href={item.url}
+                          className="text-xs font-extrabold text-[#3d4f97] hover:text-[#e60012] truncate"
+                        >
+                          {item.title}
+                        </a>
                       </div>
 
-                      {/* Display URL link */}
-                      <span className="block mt-0.5 text-[11px] font-mono font-black text-black underline underline-offset-2 truncate max-w-full">
-                        {link.displayUrl}
-                      </span>
-
-                      <p className="mt-1 text-xs font-bold text-slate-900 line-clamp-2 leading-tight">
-                        {link.description}
-                      </p>
-                    </div>
-
-                    <span className="hidden xs:block text-base sm:text-lg font-black group-hover:translate-x-1 transition-transform shrink-0">
-                      ➔
-                    </span>
-                  </a>
-                ))}
-              </div>
-            )}
-
-            {/* TAB 2: Projects */}
-            {activeTab === "projects" && (
-              <div className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {projects.map((proj, idx) => (
-                  <div
-                    key={idx}
-                    className={`border-3 border-black ${proj.color} p-3.5 sm:p-4 shadow-[5px_5px_0px_0px_#000] sm:shadow-[6px_6px_0px_0px_#000] transition-all hover:-translate-y-1 hover:shadow-[7px_7px_0px_0px_#000] flex flex-col justify-between`}
-                  >
-                    <div>
-                      {/* Image Frame */}
-                      <div className="relative h-36 sm:h-44 w-full border-3 border-black bg-white shadow-[3px_3px_0px_0px_#000] overflow-hidden mb-3 sm:mb-4">
-                        <Image
-                          src={proj.image}
-                          alt={proj.title}
-                          fill
-                          className="object-cover filter contrast-110"
-                        />
-                        <div className="absolute top-2 left-2 border-2 border-black bg-black px-2 py-0.5 text-[9px] sm:text-[10px] font-black text-white uppercase">
-                          {proj.category}
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className="text-[10px] font-bold text-[#60619c] hidden sm:inline">
+                          {item.date}
+                        </span>
+                        <div className="h-4 w-4 rounded-xs bg-[#f68d1f] flex items-center justify-center text-white text-[10px] font-black">
+                          ›
                         </div>
                       </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-                      <h3 className="text-base sm:text-lg font-black text-black uppercase truncate">
-                        {proj.title}
-                      </h3>
-                      <p className="mt-1.5 text-xs font-bold text-slate-900 leading-relaxed">
-                        {proj.description}
-                      </p>
+              {/* SECTION B: Featured Sites 2x2 Grid */}
+              <div className="beveled-plate bg-[#8ba1d4] p-2 space-y-1.5">
+                <div className="bg-[#7a8aba] border-b border-[#3d4f97] px-2 py-1 text-xs font-black uppercase text-[#21242e]">
+                  ≡ FEATURED OFFICIAL NETWORK SITES
+                </div>
 
-                      {/* Tag Badges */}
-                      <div className="mt-3 flex flex-wrap gap-1 sm:gap-1.5">
-                        {proj.tags.map((tag, tIdx) => (
-                          <span
-                            key={tIdx}
-                            className="border border-black bg-white px-1.5 py-0.5 text-[9px] sm:text-[10px] font-black text-black shadow-[1px_1px_0px_0px_#000]"
-                          >
-                            {tag}
-                          </span>
-                        ))}
+                <div className="grid grid-cols-2 gap-2">
+                  {featuredSites.map((site, idx) => (
+                    <a
+                      key={idx}
+                      href={`https://${site.url}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="halftone-carbon border-2 border-[#3d4f97] p-1.5 flex items-center gap-2.5 group hover:border-[#f68d1f] transition-all"
+                    >
+                      <div className="relative h-11 w-16 shrink-0 border border-[#9fbee7] bg-[#7a8aba] overflow-hidden">
+                        <Image
+                          src={site.image}
+                          alt={site.name}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform"
+                        />
                       </div>
-                    </div>
+                      <div className="min-w-0">
+                        <span className="block text-xs font-black text-white group-hover:text-[#ecab37] truncate">
+                          {site.name}
+                        </span>
+                        <span className="text-[10px] font-mono text-[#9fbee7] truncate block">
+                          {site.url}
+                        </span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
 
-                    {/* Action Link Buttons - Responsive Grid */}
-                    <div className="mt-5 grid grid-cols-2 gap-2 pt-3 border-t-2 border-black">
-                      <a
-                        href={proj.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full text-center border-2 border-black bg-white hover:bg-black hover:text-white px-2 py-1.5 text-[11px] sm:text-xs font-black uppercase shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all truncate"
-                      >
-                        CODE ➔
-                      </a>
-                      <a
-                        href={proj.demoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full text-center border-2 border-black bg-yellow-300 hover:bg-yellow-400 px-2 py-1.5 text-[11px] sm:text-xs font-black uppercase shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all truncate"
-                      >
-                        DEMO 🚀
-                      </a>
-                    </div>
-                  </div>
+              {/* SECTION C: My-Link Quick Connections */}
+              <div className="beveled-plate bg-[#8ba1d4] p-2 space-y-1.5">
+                <div className="bg-[#7a8aba] border-b border-[#3d4f97] px-2 py-1 text-xs font-black uppercase text-[#21242e]">
+                  ≡ DEVELOPER PROFILE & CONNECTIONS
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-2">
+                  {profileLinks.map((link, idx) => (
+                    <a
+                      key={idx}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-white border-2 border-[#3d4f97] p-2 flex items-center justify-between hover:bg-[#dedede] transition-colors"
+                    >
+                      <div>
+                        <span className="block text-xs font-black text-[#21242e]">
+                          {link.name}
+                        </span>
+                        <span className="text-[10px] text-[#60619c] font-semibold">
+                          {link.desc}
+                        </span>
+                      </div>
+                      <span className="bg-[#ecab37] text-[#21242e] border border-[#21242e] px-1.5 py-0.5 text-[9px] font-black">
+                        {link.badge}
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+
+            {/* Right Action Rail (1/3 Width) */}
+            <div className="w-full md:w-64 space-y-3 shrink-0">
+              
+              {/* Right Action Buttons Slabs */}
+              <div className="space-y-1.5">
+                {[
+                  { label: "MY-LINK MEMBER LOGIN", icon: "🔑", bg: "hover:bg-[#3d4f97]" },
+                  { label: "NSIDER NEWSLETTER", icon: "✉️", bg: "hover:bg-[#3d4f97]" },
+                  { label: "DOWNLOAD CENTER", icon: "💾", bg: "hover:bg-[#3d4f97]" },
+                  { label: "TECH SUPPORT & FAQ", icon: "❓", bg: "hover:bg-[#3d4f97]" },
+                ].map((btn, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => alert(`Opening ${btn.label}...`)}
+                    className={`w-full halftone-carbon text-white border-2 border-[#3d4f97] px-3 py-2 text-xs font-black uppercase tracking-wider flex items-center justify-between ${btn.bg} active:translate-y-0.5 transition-all`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span>{btn.icon}</span>
+                      <span>{btn.label}</span>
+                    </span>
+                    <span className="text-[#f68d1f]">➔</span>
+                  </button>
                 ))}
               </div>
-            )}
 
-            {/* TAB 3: About & Skills */}
-            {activeTab === "about" && (
-              <div className="space-y-5 sm:space-y-6">
-                <div className="border-3 border-black bg-yellow-200 p-4 sm:p-5 shadow-[4px_4px_0px_0px_#000] sm:shadow-[6px_6px_0px_0px_#000]">
-                  <h3 className="text-lg sm:text-xl font-black uppercase text-black flex items-center gap-2 mb-2">
-                    <span>👾</span> WHO AM I?
-                  </h3>
-                  <p className="text-xs sm:text-sm font-bold leading-relaxed text-black">
-                    안녕하세요! 저는 코드를 예술처럼 다듬고 사용자 경험을 극대화하는 것을 좋아하는 풀스택 개발자 홍길동입니다. 웹 인터페이스 디자인부터 백엔드 분산 시스템 구축까지 빠르고 견고한 제품을 만듭니다.
-                  </p>
+              {/* Player's Poll Module */}
+              <div className="beveled-plate bg-[#8ba1d4] p-3 space-y-2">
+                <div className="bg-[#ecab37] border border-[#21242e] px-2 py-0.5 text-[11px] font-black uppercase text-[#21242e]">
+                  POLL: NINTENDO SYSTEM CHOICE
                 </div>
 
-                <div>
-                  <h3 className="text-base sm:text-lg font-black uppercase text-black mb-3 sm:mb-4">
-                    ⚡ TECH STACK & SKILLS
-                  </h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-                    {skills.map((skill, sIdx) => (
-                      <div
-                        key={sIdx}
-                        className={`border-2 sm:border-3 border-black ${skill.bg} p-2.5 sm:p-3.5 shadow-[3px_3px_0px_0px_#000] sm:shadow-[4px_4px_0px_0px_#000] flex flex-col justify-between`}
-                      >
-                        <span className="text-xs sm:text-sm font-black uppercase text-black break-words">
-                          {skill.name}
-                        </span>
-                        <span className="mt-2 inline-block self-start border border-black bg-black text-white px-1.5 py-0.5 text-[9px] sm:text-[10px] font-black">
-                          {skill.level}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* TAB 4: Contact Form */}
-            {activeTab === "contact" && (
-              <div className="border-3 border-black bg-pink-200 p-4 sm:p-8 shadow-[5px_5px_0px_0px_#000] sm:shadow-[8px_8px_0px_0px_#000]">
-                <h3 className="text-xl sm:text-2xl font-black uppercase text-black mb-1">
-                  SEND A MESSAGE ✉️
-                </h3>
-                <p className="text-xs font-bold text-black mb-5">
-                  프로젝트 외주, 개발 협업, 멘토링 문의 등 편하게 메시지를 남겨주세요!
+                <p className="text-xs font-extrabold text-[#21242e] leading-snug">
+                  Which system are you spending the most game time on this month?
                 </p>
 
-                <form onSubmit={(e) => { e.preventDefault(); alert("🚀 메시지가 성공적으로 전송되었습니다!"); }} className="space-y-4">
-                  <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
-                    <div>
-                      <label className="block text-[11px] sm:text-xs font-black uppercase text-black mb-1">
-                        YOUR NAME / COMPANY
-                      </label>
+                <div className="space-y-1.5 pt-1">
+                  {[
+                    { id: "GBA", label: "Game Boy Advance (32-Bit)" },
+                    { id: "N64", label: "Nintendo 64" },
+                    { id: "NGC", label: "Nintendo GameCube" },
+                  ].map((option) => (
+                    <label
+                      key={option.id}
+                      className="flex items-center gap-2 text-xs font-bold text-[#21242e] cursor-pointer"
+                    >
                       <input
-                        type="text"
-                        required
-                        placeholder="NAME HERE"
-                        className="w-full border-2 sm:border-3 border-black bg-white px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-black shadow-[2px_2px_0px_0px_#000] sm:shadow-[3px_3px_0px_0px_#000] focus:outline-none focus:bg-yellow-100"
+                        type="radio"
+                        name="poll"
+                        value={option.id}
+                        checked={pollChoice === option.id}
+                        onChange={(e) => setPollChoice(e.target.value)}
+                        className="accent-[#f68d1f]"
                       />
-                    </div>
-                    <div>
-                      <label className="block text-[11px] sm:text-xs font-black uppercase text-black mb-1">
-                        YOUR EMAIL
-                      </label>
-                      <input
-                        type="email"
-                        required
-                        placeholder="NAME@EMAIL.COM"
-                        className="w-full border-2 sm:border-3 border-black bg-white px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-black shadow-[2px_2px_0px_0px_#000] sm:shadow-[3px_3px_0px_0px_#000] focus:outline-none focus:bg-yellow-100"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-[11px] sm:text-xs font-black uppercase text-black mb-1">
-                      MESSAGE CONTENT
+                      <span>{option.label}</span>
                     </label>
-                    <textarea
-                      rows={4}
-                      required
-                      placeholder="TYPE YOUR MESSAGE HERE..."
-                      className="w-full border-2 sm:border-3 border-black bg-white px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-black shadow-[2px_2px_0px_0px_#000] sm:shadow-[3px_3px_0px_0px_#000] focus:outline-none focus:bg-yellow-100 resize-none"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full sm:w-auto border-2 sm:border-3 border-black bg-black hover:bg-yellow-300 hover:text-black text-white px-6 sm:px-8 py-3 text-xs sm:text-sm font-black uppercase tracking-wider shadow-[4px_4px_0px_0px_#000] sm:shadow-[5px_5px_0px_0px_#000] active:translate-x-1 active:translate-y-1 active:shadow-none transition-all"
-                  >
-                    SEND MESSAGE 🚀
-                  </button>
-                </form>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => setPollSubmitted(true)}
+                  className="w-full beveled-chip bg-[#f68d1f] hover:bg-[#e48600] text-white py-1.5 text-xs font-black uppercase tracking-wider mt-2 shadow-sm"
+                >
+                  {pollSubmitted ? "VOTE RECORDED! ✓" : "SUBMIT VOTE"}
+                </button>
               </div>
-            )}
+
+              {/* "What Is — Game Finder" Info Box */}
+              <div className="bg-white border-2 border-[#3d4f97] p-3 space-y-1.5">
+                <div className="bg-[#ecab37] border border-[#21242e] px-2 py-0.5 text-[10px] font-black uppercase text-[#21242e]">
+                  WHAT IS GAME FINDER?
+                </div>
+                <p className="text-xs font-bold text-[#21242e] leading-relaxed">
+                  Search over 500+ official Nintendo 64 and Game Boy Advance titles by genre, release date, and ESRB rating.
+                </p>
+              </div>
+
+              {/* Side Promo Card */}
+              <div className="bg-[#acace7] border-2 border-[#3d4f97] p-3 text-center space-y-2">
+                <span className="text-[10px] font-black uppercase text-[#e60012] bg-white border border-[#e60012] px-2 py-0.5 inline-block">
+                  RECOMMENDED HARDWARE
+                </span>
+                <h4 className="box-art-title text-xl leading-none">
+                  NINTENDO 64
+                </h4>
+                <p className="text-[11px] font-extrabold text-[#21242e]">
+                  Experience revolutionary 3D gaming with 4-player multiplayer action built-in.
+                </p>
+              </div>
+
+            </div>
 
           </div>
 
         </div>
 
-        {/* Footer Banner */}
-        <footer className="border-t-3 sm:border-t-4 border-black bg-yellow-300 px-4 py-3.5 text-center font-black text-[10px] sm:text-xs uppercase tracking-wider text-black">
-          © 2026 GILDONG HONG • BUILT WITH NEXT.JS 16 & NEOBRUTALISM ⚡
+        {/* FOOTER BAR: Carbon Chamfered Slab */}
+        <footer className="mt-2 halftone-carbon border-2 border-[#3d4f97] p-3 sm:p-4 text-white flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+          
+          <div className="space-y-1">
+            <p className="text-[11px] font-mono text-[#9fbee7]">
+              © 1997–2001 Nintendo / My-Link. All Rights Reserved.
+            </p>
+            <p className="text-[10px] text-[#8ba1d4]">
+              Nintendo 64, Game Boy Advance, and Nintendo GameCube are trademarks of Nintendo.
+            </p>
+          </div>
+
+          {/* ESRB Badges & Rating */}
+          <div className="flex items-center gap-3">
+            <div className="bg-[#ecab37] border border-[#21242e] px-2 py-1 text-[10px] font-black text-[#21242e] rounded-xs uppercase">
+              ESRB — PRIVACY CERTIFIED
+            </div>
+            <div className="bg-white border-2 border-[#21242e] px-2 py-0.5 font-black text-sm text-[#21242e]">
+              EVERYONE [E]
+            </div>
+          </div>
         </footer>
-      </main>
+
+      </div>
     </div>
   );
 }
