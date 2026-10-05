@@ -6,461 +6,470 @@ import Image from "next/image";
 export default function Home() {
   const [activeTab, setActiveTab] = useState<"links" | "projects" | "about" | "contact">("links");
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [likeCount, setLikeCount] = useState(128);
+  const [liked, setLiked] = useState(false);
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText("gildong@example.com");
     setCopiedEmail(true);
-    setTimeout(() => setCopiedEmail(false), 2000);
+    setTimeout(() => setCopiedEmail(false), 2200);
+  };
+
+  const handleLike = () => {
+    if (!liked) {
+      setLikeCount((prev) => prev + 1);
+      setLiked(true);
+    } else {
+      setLikeCount((prev) => prev - 1);
+      setLiked(false);
+    }
   };
 
   const links = [
     {
-      title: "GitHub 저장소",
-      description: "오픈소스 프로젝트와 개인 코딩 작업물",
+      title: "GITHUB REPOSITORY",
+      description: "오픈소스 및 개인 개발 프로젝트 코드 모음",
       url: "https://github.com",
-      badge: "45 Repos",
+      badge: "45 REPOS",
+      bg: "bg-yellow-300 hover:bg-yellow-400",
+      stickerBg: "bg-black text-yellow-300",
       icon: (
-        <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+        <svg className="h-7 w-7" fill="currentColor" viewBox="0 0 24 24">
           <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
         </svg>
       ),
-      gradient: "from-gray-900 to-gray-800 text-white dark:from-zinc-800 dark:to-zinc-900",
     },
     {
-      title: "기술 블로그 (Velog)",
-      description: "개발 모험기와 학습 노하우를 정리하는 공간",
+      title: "TECH BLOG (VELOG)",
+      description: "개발 지식과 디버깅 기록을 공유하는 공간",
       url: "https://velog.io",
-      badge: "매주 업데이트",
+      badge: "WEEKLY",
+      bg: "bg-cyan-300 hover:bg-cyan-400",
+      stickerBg: "bg-black text-cyan-300",
       icon: (
-        <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+        <svg className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
         </svg>
       ),
-      gradient: "from-teal-600 to-emerald-600 text-white",
     },
     {
-      title: "LinkedIn 프로필",
-      description: "경력 사항 및 비즈니스 네트워크",
+      title: "LINKEDIN NETWORK",
+      description: "커리어 및 글로벌 비즈니스 이력",
       url: "https://linkedin.com",
-      badge: "Connect",
+      badge: "CONNECT",
+      bg: "bg-pink-300 hover:bg-pink-400",
+      stickerBg: "bg-black text-pink-300",
       icon: (
-        <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+        <svg className="h-7 w-7" fill="currentColor" viewBox="0 0 24 24">
           <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.6a1.64 1.64 0 1 0 0 3.28 1.64 1.64 0 0 0 0-3.28z"/>
         </svg>
       ),
-      gradient: "from-blue-600 to-sky-600 text-white",
     },
     {
-      title: "온라인 포트폴리오",
-      description: "디자인과 개발 프로젝트의 상세 기록",
+      title: "PORTFOLIO WEBSITE",
+      description: "인터랙티브 웹 앱 프로젝트 상세 모음",
       url: "#",
-      badge: "Featured",
+      badge: "FEATURED 🔥",
+      bg: "bg-lime-300 hover:bg-lime-400",
+      stickerBg: "bg-black text-lime-300",
       icon: (
-        <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+        <svg className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
         </svg>
       ),
-      gradient: "from-indigo-600 to-purple-600 text-white",
     },
   ];
 
   const projects = [
     {
-      title: "LinkCraft (링크 통합 빌더)",
-      category: "Full-Stack Web App",
-      description: "개인 프로필과 모바일 맞춤형 링크 페이지를 손쉽게 커스텀하고 관리할 수 있는 서비스입니다.",
-      tags: ["Next.js", "Tailwind CSS", "TypeScript", "Prisma"],
+      title: "LINKCRAFT ⚡",
+      category: "FULL-STACK",
+      description: "네오브루탈리즘 감성의 나만의 링크 페이지를 3초 만에 생성하는 웹 플랫폼입니다.",
+      tags: ["Next.js 16", "Tailwind CSS", "TypeScript"],
       image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
+      color: "bg-yellow-200",
       demoUrl: "https://example.com",
       githubUrl: "https://github.com",
     },
     {
-      title: "SmartDash (실시간 대시보드)",
-      category: "SaaS Application",
-      description: "실시간 데이터 시각화와 커스텀 위젯 조립을 지원하는 차세대 반응형 관리자 파이프라인입니다.",
-      tags: ["React 19", "Recharts", "Node.js", "WebSockets"],
+      title: "SMART DASH 📊",
+      category: "SAAS APP",
+      description: "실시간 대용량 데이터 파이프라인을 시각화하는 고성능 브루탈리스트 대시보드입니다.",
+      tags: ["React 19", "WebSockets", "Recharts"],
       image: "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?auto=format&fit=crop&w=800&q=80",
+      color: "bg-cyan-200",
       demoUrl: "https://example.com",
       githubUrl: "https://github.com",
     },
     {
-      title: "AI Co-pilot (코드 생성 도우미)",
-      category: "AI Service",
-      description: "자연어 명령으로 프론트엔드 컴포넌트를 즉시 시각화하고 코드를 생성해주는 웹 툴킷입니다.",
-      tags: ["Next.js", "OpenAI API", "Tailwind CSS"],
+      title: "AI COPILOT 🤖",
+      category: "AI ENGINE",
+      description: "자연어 프롬프트를 직관적인 웹 인터페이스 컴포넌트로 자동 변환해주는 AI 코딩 도구입니다.",
+      tags: ["Next.js", "OpenAI API", "Tailwind v4"],
       image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
+      color: "bg-pink-200",
       demoUrl: "https://example.com",
       githubUrl: "https://github.com",
     },
   ];
 
   const skills = [
-    { name: "React / Next.js", level: "Senior", category: "Frontend" },
-    { name: "TypeScript", level: "Advanced", category: "Language" },
-    { name: "Tailwind CSS", level: "Expert", category: "Styling" },
-    { name: "Node.js / Express", level: "Intermediate", category: "Backend" },
-    { name: "PostgreSQL / Prisma", level: "Intermediate", category: "Database" },
-    { name: "Git / Docker", level: "Proficient", category: "DevOps" },
+    { name: "React 19 / Next.js 16", level: "EXPERT ⚡", bg: "bg-yellow-300" },
+    { name: "TypeScript", level: "PRO 🎯", bg: "bg-cyan-300" },
+    { name: "Tailwind CSS v4", level: "NINJA 🥷", bg: "bg-pink-300" },
+    { name: "Node.js / Express", level: "ADVANCED 🚀", bg: "bg-lime-300" },
+    { name: "PostgreSQL & Prisma", level: "SKILLED 💾", bg: "bg-purple-300" },
+    { name: "Git & Docker Workflow", level: "READY 📦", bg: "bg-orange-300" },
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-blue-500 selection:text-white dark:bg-slate-950 dark:text-slate-100">
-      {/* Background decoration grid & gradient */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-blue-400/20 blur-3xl dark:bg-blue-600/15" />
-        <div className="absolute top-60 -right-40 h-96 w-96 rounded-full bg-indigo-400/20 blur-3xl dark:bg-indigo-600/15" />
+    <div className="min-h-screen px-4 py-8 sm:px-6 sm:py-12 lg:px-8 text-black font-sans selection:bg-black selection:text-yellow-300">
+      
+      {/* Top Floating Neo-Stickers Header */}
+      <div className="mx-auto max-w-4xl mb-6 flex flex-wrap items-center justify-between gap-3">
+        <div className="inline-flex items-center gap-2 border-3 border-black bg-yellow-300 px-4 py-1.5 font-black text-xs sm:text-sm uppercase tracking-wider shadow-[3px_3px_0px_0px_#000] -rotate-1">
+          <span className="h-2.5 w-2.5 rounded-full bg-red-600 animate-pulse border border-black" />
+          <span>NEOBRUTALISM EDITION 💥</span>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={handleLike}
+            className={`flex items-center gap-2 border-3 border-black px-4 py-1.5 text-xs sm:text-sm font-black uppercase shadow-[3px_3px_0px_0px_#000] transition-all active:translate-x-1 active:translate-y-1 active:shadow-none ${
+              liked ? "bg-pink-400 text-black" : "bg-white hover:bg-pink-200"
+            }`}
+          >
+            <span>👍 LIKES</span>
+            <span className="border-2 border-black bg-black text-white px-2 py-0.5 rounded-none text-xs">
+              {likeCount}
+            </span>
+          </button>
+
+          <button
+            onClick={handleCopyEmail}
+            className="border-3 border-black bg-cyan-300 hover:bg-cyan-400 px-4 py-1.5 text-xs sm:text-sm font-black uppercase shadow-[3px_3px_0px_0px_#000] transition-all active:translate-x-1 active:translate-y-1 active:shadow-none"
+          >
+            {copiedEmail ? "COPIED! 🎉" : "COPY EMAIL ✉️"}
+          </button>
+        </div>
       </div>
 
-      <div className="relative mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
-        {/* Profile Card Main Container */}
-        <main className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white/90 shadow-xl backdrop-blur-md dark:border-slate-800/80 dark:bg-slate-900/90">
+      {/* Main Neobrutalist Container */}
+      <main className="mx-auto max-w-4xl border-4 border-black bg-white shadow-[10px_10px_0px_0px_#000] sm:shadow-[14px_14px_0px_0px_#000] rounded-none overflow-hidden">
+        
+        {/* Banner Cover */}
+        <div className="relative h-44 sm:h-60 w-full border-b-4 border-black bg-yellow-300 overflow-hidden">
+          <Image
+            src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1600&q=80"
+            alt="네오브루탈리즘 커버 아트"
+            fill
+            priority
+            className="object-cover object-center opacity-90 filter contrast-125"
+          />
+          <div className="absolute inset-0 bg-yellow-400/20 mix-blend-multiply" />
           
-          {/* Banner Header Image */}
-          <div className="relative h-48 sm:h-64 w-full overflow-hidden bg-slate-800">
-            <Image
-              src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1600&q=80"
-              alt="프로필 커버 배경 이미지"
-              fill
-              priority
-              className="object-cover object-center opacity-85 transition-transform duration-700 hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+          {/* Cover Decorative Sticker Labels */}
+          <div className="absolute top-4 left-4 border-3 border-black bg-black px-3 py-1 font-black text-xs text-yellow-300 shadow-[3px_3px_0px_0px_#fff] rotate-2">
+            HELLO WORLD! 👋
+          </div>
+          <div className="absolute bottom-4 right-4 border-3 border-black bg-pink-400 px-3 py-1 font-black text-xs text-black shadow-[3px_3px_0px_0px_#000] -rotate-2">
+            FULL-STACK DEV 🚀
+          </div>
+        </div>
+
+        {/* Profile Card Header Info */}
+        <div className="p-6 sm:p-10 bg-white">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between -mt-16 sm:-mt-24 mb-6 gap-6">
             
-            {/* Quick Action Top Bar */}
-            <div className="absolute top-4 right-4 flex items-center gap-2">
-              <button
-                onClick={handleCopyEmail}
-                className="flex items-center gap-1.5 rounded-full bg-white/20 px-3.5 py-1.5 text-xs font-medium text-white backdrop-blur-md transition hover:bg-white/30 active:scale-95"
-              >
-                <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                </svg>
-                {copiedEmail ? "이메일 복사완료!" : "이메일 문의"}
-              </button>
+            {/* Avatar Photo Frame */}
+            <div className="relative">
+              <div className="relative h-32 w-32 sm:h-40 sm:w-40 border-4 border-black bg-yellow-300 shadow-[6px_6px_0px_0px_#000] overflow-hidden">
+                <Image
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80"
+                  alt="홍길동 네오브루탈리즘 프로필"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="absolute -bottom-3 -right-3 border-3 border-black bg-lime-400 px-2.5 py-1 text-xs font-black uppercase text-black shadow-[2px_2px_0px_0px_#000] rotate-3">
+                AVAILABLE ⚡
+              </div>
+            </div>
+
+            {/* Brutalist Stat Cards */}
+            <div className="grid grid-cols-3 gap-3 w-full sm:w-auto">
+              <div className="border-3 border-black bg-yellow-300 p-2.5 sm:p-3 text-center shadow-[4px_4px_0px_0px_#000] -rotate-1">
+                <span className="block text-xl sm:text-2xl font-black">5+ YRS</span>
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">EXPERIENCE</span>
+              </div>
+              <div className="border-3 border-black bg-pink-300 p-2.5 sm:p-3 text-center shadow-[4px_4px_0px_0px_#000] rotate-1">
+                <span className="block text-xl sm:text-2xl font-black">40+</span>
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">PROJECTS</span>
+              </div>
+              <div className="border-3 border-black bg-cyan-300 p-2.5 sm:p-3 text-center shadow-[4px_4px_0px_0px_#000] -rotate-1">
+                <span className="block text-xl sm:text-2xl font-black">100%</span>
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">HAPPY CODE</span>
+              </div>
             </div>
           </div>
 
-          {/* Profile Header Details */}
-          <div className="relative px-6 pb-6 pt-0 sm:px-8">
-            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between -mt-16 sm:-mt-20 mb-6 gap-4">
-              
-              {/* Profile Avatar Image with Indicator */}
-              <div className="relative flex-shrink-0">
-                <div className="relative h-28 w-28 sm:h-36 sm:w-36 rounded-full border-4 border-white bg-slate-100 shadow-md overflow-hidden dark:border-slate-900">
-                  <Image
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80"
-                    alt="홍길동 프로필 이미지"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                {/* Live Availability Badge */}
-                <div className="absolute bottom-1 right-1 flex items-center gap-1 rounded-full border border-white bg-emerald-500 px-2.5 py-0.5 text-[11px] font-semibold text-white shadow dark:border-slate-900">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75"></span>
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-white"></span>
-                  </span>
-                  <span>구직중</span>
-                </div>
-              </div>
-
-              {/* Stat Counters */}
-              <div className="flex items-center gap-4 sm:gap-6 self-start sm:self-auto py-2">
-                <div className="text-center sm:text-right">
-                  <span className="block text-xl font-bold text-slate-900 dark:text-white">5+</span>
-                  <span className="text-xs text-slate-500 dark:text-slate-400">개발 경력</span>
-                </div>
-                <div className="h-8 w-px bg-slate-200 dark:bg-slate-800" />
-                <div className="text-center sm:text-right">
-                  <span className="block text-xl font-bold text-slate-900 dark:text-white">40+</span>
-                  <span className="text-xs text-slate-500 dark:text-slate-400">완료 프로젝트</span>
-                </div>
-                <div className="h-8 w-px bg-slate-200 dark:bg-slate-800" />
-                <div className="text-center sm:text-right">
-                  <span className="block text-xl font-bold text-slate-900 dark:text-white">100%</span>
-                  <span className="text-xs text-slate-500 dark:text-slate-400">고객 만족도</span>
-                </div>
-              </div>
+          {/* Name & Tagline */}
+          <div className="space-y-3">
+            <div className="flex flex-wrap items-center gap-3">
+              <h1 className="text-3xl sm:text-5xl font-black tracking-tight uppercase text-black">
+                홍길동 <span className="text-xl sm:text-3xl text-slate-700">(GILDONG HONG)</span>
+              </h1>
+              <span className="border-3 border-black bg-purple-300 px-3 py-1 text-xs font-black uppercase shadow-[3px_3px_0px_0px_#000]">
+                SENIOR ENGINEER
+              </span>
             </div>
+            
+            <p className="text-base sm:text-lg font-bold leading-relaxed text-black border-l-4 border-black pl-4 py-1 bg-yellow-100/60">
+              ⚡ 사용자 경험을 압도하는 강렬한 UI/UX와 확장성 높은 코드를 구현하는 개발자입니다. 직관적이고 도전적인 웹 서비스를 좋아합니다.
+            </p>
 
-            {/* Profile Intro Info */}
-            <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
-                  홍길동 <span className="text-base font-normal text-slate-500 dark:text-slate-400">(Gildong Hong)</span>
-                </h1>
-                <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 dark:bg-blue-400/10 dark:text-blue-400 dark:ring-blue-400/20">
-                  Full-Stack Engineer
-                </span>
-              </div>
-              <p className="mt-2 text-sm sm:text-base leading-relaxed text-slate-600 dark:text-slate-300 max-w-2xl">
-                사용자 경험을 최우선으로 생각하는 프론트엔드 중심 풀스택 개발자입니다. 복잡한 문제를 직관적이고 아름다운 웹 서비스로 풀어내는 일에서 큰 보람을 느낍니다.
-              </p>
-
-              {/* Location & Contact Meta Pills */}
-              <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
-                <span className="flex items-center gap-1">
-                  <svg className="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                  </svg>
-                  서울특별시, 대한민국
-                </span>
-                <span>•</span>
-                <span className="flex items-center gap-1">
-                  <svg className="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                  </svg>
-                  외주 & 이직 협의 가능
-                </span>
-                <span>•</span>
-                <span className="flex items-center gap-1">
-                  <svg className="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                  </svg>
-                  gildong@example.com
-                </span>
-              </div>
+            {/* Quick Meta Badges */}
+            <div className="flex flex-wrap gap-2 pt-2">
+              <span className="border-2 border-black bg-white px-3 py-1 text-xs font-extrabold uppercase shadow-[2px_2px_0px_0px_#000]">
+                📍 SEOUL, KOREA
+              </span>
+              <span className="border-2 border-black bg-white px-3 py-1 text-xs font-extrabold uppercase shadow-[2px_2px_0px_0px_#000]">
+                💼 FREELANCE & FULL-TIME
+              </span>
+              <span className="border-2 border-black bg-white px-3 py-1 text-xs font-extrabold uppercase shadow-[2px_2px_0px_0px_#000]">
+                ✉️ GILDONG@EXAMPLE.COM
+              </span>
             </div>
+          </div>
 
-            {/* Navigation Tabs */}
-            <div className="mt-8 border-b border-slate-200 dark:border-slate-800">
-              <nav className="flex space-x-6 overflow-x-auto pb-px scrollbar-none" aria-label="Tabs">
-                {[
-                  { id: "links", label: "주요 링크", count: links.length },
-                  { id: "projects", label: "프로젝트", count: projects.length },
-                  { id: "about", label: "소개 & 스택" },
-                  { id: "contact", label: "문의하기" },
-                ].map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id as typeof activeTab)}
-                    className={`whitespace-nowrap py-3 px-1 text-sm font-semibold border-b-2 transition-all flex items-center gap-2 ${
-                      activeTab === tab.id
-                        ? "border-blue-600 text-blue-600 dark:border-blue-500 dark:text-blue-400"
-                        : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 dark:text-slate-400 dark:hover:text-slate-200"
-                    }`}
+          {/* Brutalist Navigation Tabs */}
+          <div className="mt-10 border-b-4 border-black pb-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                { id: "links", label: "🔗 LINKS", color: "bg-yellow-300 hover:bg-yellow-400" },
+                { id: "projects", label: "⚡ PROJECTS", color: "bg-pink-300 hover:bg-pink-400" },
+                { id: "about", label: "🧠 ABOUT", color: "bg-lime-300 hover:bg-lime-400" },
+                { id: "contact", label: "✉️ CONTACT", color: "bg-cyan-300 hover:bg-cyan-400" },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                  className={`border-3 border-black py-3 px-4 text-center text-sm font-black uppercase shadow-[4px_4px_0px_0px_#000] transition-all ${
+                    activeTab === tab.id
+                      ? "bg-black text-white translate-x-1 translate-y-1 shadow-none"
+                      : `${tab.color} text-black active:translate-x-1 active:translate-y-1 active:shadow-none`
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Tab Content Display */}
+          <div className="mt-8">
+            
+            {/* TAB 1: Links */}
+            {activeTab === "links" && (
+              <div className="grid gap-5 sm:grid-cols-2">
+                {links.map((link, idx) => (
+                  <a
+                    key={idx}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`group relative flex items-center gap-4 border-3 border-black ${link.bg} p-4 sm:p-5 shadow-[5px_5px_0px_0px_#000] transition-all hover:-translate-y-1 hover:shadow-[7px_7px_0px_0px_#000] active:translate-x-1 active:translate-y-1 active:shadow-none`}
                   >
-                    {tab.label}
-                    {tab.count !== undefined && (
-                      <span className={`rounded-full px-2 py-0.5 text-xs ${
-                        activeTab === tab.id
-                          ? "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300"
-                          : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
-                      }`}>
-                        {tab.count}
-                      </span>
-                    )}
-                  </button>
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center border-3 border-black bg-white shadow-[2px_2px_0px_0px_#000]">
+                      {link.icon}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-2">
+                        <h3 className="text-base font-black uppercase text-black truncate">
+                          {link.title}
+                        </h3>
+                        <span className={`border border-black ${link.stickerBg} px-2 py-0.5 text-[10px] font-black uppercase shadow-[1px_1px_0px_0px_#000]`}>
+                          {link.badge}
+                        </span>
+                      </div>
+                      <p className="mt-1 text-xs font-bold text-slate-900 truncate">
+                        {link.description}
+                      </p>
+                    </div>
+                    <span className="text-lg font-black group-hover:translate-x-1 transition-transform">
+                      ➔
+                    </span>
+                  </a>
                 ))}
-              </nav>
-            </div>
+              </div>
+            )}
 
-            {/* Tab Contents */}
-            <div className="mt-6">
-              {/* TAB 1: Links */}
-              {activeTab === "links" && (
-                <div className="grid gap-4 sm:grid-cols-2">
-                  {links.map((link, idx) => (
-                    <a
-                      key={idx}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group relative flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white p-4 transition-all duration-300 hover:-translate-y-1 hover:border-blue-400 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900 dark:hover:border-blue-500"
-                    >
-                      <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${link.gradient} shadow-md transition-transform group-hover:scale-110`}>
-                        {link.icon}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-2">
-                          <h3 className="text-sm font-bold text-slate-900 dark:text-white truncate">
-                            {link.title}
-                          </h3>
-                          <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-400">
-                            {link.badge}
-                          </span>
-                        </div>
-                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 truncate">
-                          {link.description}
-                        </p>
-                      </div>
-                      <svg className="h-5 w-5 text-slate-400 transition-transform group-hover:translate-x-1 group-hover:text-blue-600 dark:group-hover:text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7"/>
-                      </svg>
-                    </a>
-                  ))}
-                </div>
-              )}
-
-              {/* TAB 2: Projects */}
-              {activeTab === "projects" && (
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {projects.map((proj, idx) => (
-                    <div
-                      key={idx}
-                      className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
-                    >
-                      <div className="relative h-44 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+            {/* TAB 2: Projects */}
+            {activeTab === "projects" && (
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {projects.map((proj, idx) => (
+                  <div
+                    key={idx}
+                    className={`border-3 border-black ${proj.color} p-4 shadow-[6px_6px_0px_0px_#000] transition-all hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_#000] flex flex-col justify-between`}
+                  >
+                    <div>
+                      {/* Image Frame */}
+                      <div className="relative h-44 w-full border-3 border-black bg-white shadow-[3px_3px_0px_0px_#000] overflow-hidden mb-4">
                         <Image
                           src={proj.image}
                           alt={proj.title}
                           fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          className="object-cover filter contrast-110"
                         />
-                        <div className="absolute top-3 left-3">
-                          <span className="rounded-full bg-slate-900/70 backdrop-blur-md px-2.5 py-1 text-[11px] font-medium text-white">
-                            {proj.category}
-                          </span>
+                        <div className="absolute top-2 left-2 border-2 border-black bg-black px-2 py-0.5 text-[10px] font-black text-white uppercase">
+                          {proj.category}
                         </div>
                       </div>
-                      <div className="p-4">
-                        <h3 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                          {proj.title}
-                        </h3>
-                        <p className="mt-1.5 text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
-                          {proj.description}
-                        </p>
 
-                        <div className="mt-3 flex flex-wrap gap-1.5">
-                          {proj.tags.map((tag, tIdx) => (
-                            <span key={tIdx} className="rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
+                      <h3 className="text-lg font-black text-black uppercase">
+                        {proj.title}
+                      </h3>
+                      <p className="mt-2 text-xs font-bold text-slate-900 leading-relaxed">
+                        {proj.description}
+                      </p>
 
-                        <div className="mt-4 flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800 text-xs font-semibold">
-                          <a
-                            href={proj.githubUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white flex items-center gap-1"
+                      {/* Tag Badges */}
+                      <div className="mt-3 flex flex-wrap gap-1.5">
+                        {proj.tags.map((tag, tIdx) => (
+                          <span
+                            key={tIdx}
+                            className="border border-black bg-white px-2 py-0.5 text-[10px] font-black text-black shadow-[1px_1px_0px_0px_#000]"
                           >
-                            Code ↗
-                          </a>
-                          <a
-                            href={proj.demoUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-700 dark:text-blue-400 flex items-center gap-1"
-                          >
-                            Live Demo 🚀
-                          </a>
-                        </div>
+                            {tag}
+                          </span>
+                        ))}
                       </div>
                     </div>
-                  ))}
-                </div>
-              )}
 
-              {/* TAB 3: About & Tech Stack */}
-              {activeTab === "about" && (
-                <div className="space-y-6">
-                  {/* Bio Card */}
-                  <div className="rounded-2xl border border-slate-200/80 bg-slate-50/50 p-5 dark:border-slate-800 dark:bg-slate-900/50">
-                    <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                      <span>👋</span> 안녕하세요, 홍길동입니다!
-                    </h3>
-                    <p className="mt-2 text-sm text-slate-600 leading-relaxed dark:text-slate-300">
-                      저는 프론트엔드와 백엔드를 넘나들며 사용자 친화적인 웹 플랫폼을 만드는 개발자입니다. Clean Code와 빠른 웹 성능, 반응형 UI 디자인에 관심이 높으며, 팀 커뮤니케이션과 지식 공유를 소중하게 생각합니다.
-                    </p>
-                  </div>
-
-                  {/* Skills Grid */}
-                  <div>
-                    <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-3">
-                      기술 스택 및 역량
-                    </h3>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                      {skills.map((skill, sIdx) => (
-                        <div
-                          key={sIdx}
-                          className="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900"
-                        >
-                          <div>
-                            <span className="block text-xs font-bold text-slate-900 dark:text-white">
-                              {skill.name}
-                            </span>
-                            <span className="text-[10px] text-slate-500 dark:text-slate-400">
-                              {skill.category}
-                            </span>
-                          </div>
-                          <span className="rounded-md bg-blue-50 px-2 py-0.5 text-[10px] font-semibold text-blue-600 dark:bg-blue-950 dark:text-blue-300">
-                            {skill.level}
-                          </span>
-                        </div>
-                      ))}
+                    {/* Action Link Buttons */}
+                    <div className="mt-6 flex items-center gap-2 pt-3 border-t-2 border-black">
+                      <a
+                        href={proj.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 text-center border-2 border-black bg-white hover:bg-black hover:text-white px-3 py-1.5 text-xs font-black uppercase shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all"
+                      >
+                        CODE ➔
+                      </a>
+                      <a
+                        href={proj.demoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 text-center border-2 border-black bg-yellow-300 hover:bg-yellow-400 px-3 py-1.5 text-xs font-black uppercase shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all"
+                      >
+                        DEMO 🚀
+                      </a>
                     </div>
                   </div>
-                </div>
-              )}
+                ))}
+              </div>
+            )}
 
-              {/* TAB 4: Contact */}
-              {activeTab === "contact" && (
-                <div className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">
-                    메시지 보내기 ✉️
+            {/* TAB 3: About & Skills */}
+            {activeTab === "about" && (
+              <div className="space-y-6">
+                <div className="border-3 border-black bg-yellow-200 p-5 shadow-[6px_6px_0px_0px_#000]">
+                  <h3 className="text-xl font-black uppercase text-black flex items-center gap-2 mb-2">
+                    <span>👾</span> WHO AM I?
                   </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">
-                    프로젝트 제안, 외주 문의, 잡 오퍼 등 궁금한 점이 있으시다면 언제든 연락주세요.
+                  <p className="text-sm font-bold leading-relaxed text-black">
+                    안녕하세요! 저는 코드를 예술처럼 다듬고 사용자 경험을 극대화하는 것을 좋아하는 풀스택 개발자 홍길동입니다. 웹 인터페이스 디자인부터 백엔드 분산 시스템 구축까지 빠르고 견고한 제품을 만듭니다.
                   </p>
+                </div>
 
-                  <form onSubmit={(e) => { e.preventDefault(); alert("메시지가 성공적으로 전송되었습니다!"); }} className="space-y-4">
-                    <div className="grid sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                          성함 / 회사명
-                        </label>
-                        <input
-                          type="text"
-                          required
-                          placeholder="홍길동"
-                          className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:border-blue-400"
-                        />
+                <div>
+                  <h3 className="text-lg font-black uppercase text-black mb-4">
+                    ⚡ TECH STACK & SKILLS
+                  </h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    {skills.map((skill, sIdx) => (
+                      <div
+                        key={sIdx}
+                        className={`border-3 border-black ${skill.bg} p-3.5 shadow-[4px_4px_0px_0px_#000] flex flex-col justify-between`}
+                      >
+                        <span className="text-sm font-black uppercase text-black">
+                          {skill.name}
+                        </span>
+                        <span className="mt-2 inline-block self-start border border-black bg-black text-white px-2 py-0.5 text-[10px] font-black">
+                          {skill.level}
+                        </span>
                       </div>
-                      <div>
-                        <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                          회신받을 이메일
-                        </label>
-                        <input
-                          type="email"
-                          required
-                          placeholder="example@domain.com"
-                          className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:border-blue-400"
-                        />
-                      </div>
-                    </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 4: Contact Form */}
+            {activeTab === "contact" && (
+              <div className="border-3 border-black bg-pink-200 p-6 sm:p-8 shadow-[8px_8px_0px_0px_#000]">
+                <h3 className="text-2xl font-black uppercase text-black mb-1">
+                  SEND A MESSAGE ✉️
+                </h3>
+                <p className="text-xs font-bold text-black mb-6">
+                  프로젝트 외주, 개발 협업, 멘토링 문의 등 편하게 메시지를 남겨주세요!
+                </p>
+
+                <form onSubmit={(e) => { e.preventDefault(); alert("🚀 메시지가 성공적으로 전송되었습니다!"); }} className="space-y-4">
+                  <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                        문의 내용
+                      <label className="block text-xs font-black uppercase text-black mb-1">
+                        YOUR NAME / COMPANY
                       </label>
-                      <textarea
-                        rows={4}
+                      <input
+                        type="text"
                         required
-                        placeholder="문의하실 내용이나 프로젝트 요구사항을 입력해 주세요."
-                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:border-blue-400 resize-none"
+                        placeholder="NAME HERE"
+                        className="w-full border-3 border-black bg-white px-4 py-3 text-sm font-bold text-black shadow-[3px_3px_0px_0px_#000] focus:outline-none focus:bg-yellow-100"
                       />
                     </div>
-                    <button
-                      type="submit"
-                      className="w-full sm:w-auto rounded-xl bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-blue-700 active:scale-95"
-                    >
-                      메시지 전송
-                    </button>
-                  </form>
-                </div>
-              )}
-            </div>
+                    <div>
+                      <label className="block text-xs font-black uppercase text-black mb-1">
+                        YOUR EMAIL
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        placeholder="NAME@EMAIL.COM"
+                        className="w-full border-3 border-black bg-white px-4 py-3 text-sm font-bold text-black shadow-[3px_3px_0px_0px_#000] focus:outline-none focus:bg-yellow-100"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-black uppercase text-black mb-1">
+                      MESSAGE CONTENT
+                    </label>
+                    <textarea
+                      rows={4}
+                      required
+                      placeholder="TYPE YOUR MESSAGE HERE..."
+                      className="w-full border-3 border-black bg-white px-4 py-3 text-sm font-bold text-black shadow-[3px_3px_0px_0px_#000] focus:outline-none focus:bg-yellow-100 resize-none"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full sm:w-auto border-3 border-black bg-black hover:bg-yellow-300 hover:text-black text-white px-8 py-3.5 text-sm font-black uppercase tracking-wider shadow-[5px_5px_0px_0px_#000] active:translate-x-1 active:translate-y-1 active:shadow-none transition-all"
+                  >
+                    SEND MESSAGE 🚀
+                  </button>
+                </form>
+              </div>
+            )}
 
           </div>
 
-          {/* Footer */}
-          <footer className="border-t border-slate-100 bg-slate-50/50 px-6 py-4 text-center text-xs text-slate-500 dark:border-slate-800/80 dark:bg-slate-900/50 dark:text-slate-400">
-            © 2026 홍길동. Designed & Built with Next.js & Tailwind CSS.
-          </footer>
-        </main>
-      </div>
+        </div>
+
+        {/* Footer Banner */}
+        <footer className="border-t-4 border-black bg-yellow-300 px-6 py-4 text-center font-black text-xs uppercase tracking-wider text-black">
+          © 2026 GILDONG HONG • BUILT WITH NEXT.JS 16 & NEOBRUTALISM ⚡
+        </footer>
+      </main>
     </div>
   );
 }
