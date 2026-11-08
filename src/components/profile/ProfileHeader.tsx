@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { ProfileData } from "@/types/mylink";
 import { Share2, Check, Sparkles } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface ProfileHeaderProps {
   profile: ProfileData;
@@ -22,29 +25,29 @@ export default function ProfileHeader({ profile }: ProfileHeaderProps) {
   };
 
   return (
-    <div className="flex flex-col items-center text-center pt-8 pb-4 px-4 relative">
+    <div className="flex flex-col items-center text-center pt-8 pb-4 px-4 relative w-full">
       {/* 공유 버튼 */}
-      <button
+      <Button
+        variant="ghost"
+        size="icon"
         onClick={handleShare}
-        className="absolute top-4 right-4 p-2.5 rounded-full bg-white/70 dark:bg-gray-800/70 backdrop-blur-md shadow-sm border border-gray-100 dark:border-gray-700 hover:bg-white dark:hover:bg-gray-800 active:scale-95 transition-all text-gray-700 dark:text-gray-200"
+        className="absolute top-4 right-4 rounded-full bg-white/70 dark:bg-gray-800/70 backdrop-blur-md shadow-sm border border-gray-100 dark:border-gray-700 hover:bg-white dark:hover:bg-gray-800 active:scale-95 transition-all text-gray-700 dark:text-gray-200"
         title="프로필 링크 공유하기"
       >
         {copied ? <Check className="w-4 h-4 text-green-500" /> : <Share2 className="w-4 h-4" />}
-      </button>
+      </Button>
 
-      {/* 아바타 이미지 */}
+      {/* 아바타 이미지 (shadcn/ui Avatar) */}
       <div className="relative mb-4 group">
-        <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-blue-500/20 shadow-md relative">
-          <Image
+        <Avatar className="w-24 h-24">
+          <AvatarImage
             src={profile.avatarUrl}
             alt={profile.displayName}
-            fill
-            sizes="96px"
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-            priority
+            className="group-hover:scale-105 transition-transform duration-300"
           />
-        </div>
-        <span className="absolute bottom-0 right-0 p-1.5 rounded-full bg-blue-500 text-white shadow-md">
+          <AvatarFallback>{profile.displayName.slice(0, 2)}</AvatarFallback>
+        </Avatar>
+        <span className="absolute bottom-0 right-0 p-1.5 rounded-full bg-[#3182F6] text-white shadow-md">
           <Sparkles className="w-3.5 h-3.5" />
         </span>
       </div>

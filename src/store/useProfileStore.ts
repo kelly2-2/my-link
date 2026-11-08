@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { ProfileData, ThemeConfig } from "@/types/mylink";
+import { ProfileData, ThemeConfig, LinkBlock } from "@/types/mylink";
+import mockLinksData from "@/data/mock-links.json";
 
 export const initialProfileData: ProfileData = {
   username: "gildong",
@@ -11,48 +12,7 @@ export const initialProfileData: ProfileData = {
     preset: "toss-blue",
     buttonRadius: "full",
   },
-  links: [
-    {
-      id: "link-1",
-      title: "공식 기술 블로그 (Velog)",
-      subtitle: "웹 프론트엔드와 최신 디자인 시스템 개발기",
-      url: "https://velog.io",
-      icon: "📝",
-      badge: "주 2회 발행",
-      isActive: true,
-      sortOrder: 0,
-    },
-    {
-      id: "link-2",
-      title: "GitHub 코드 저장소",
-      subtitle: "Next.js 및 토스 스타일 오픈소스 프로젝트 모음",
-      url: "https://github.com",
-      icon: "🐙",
-      badge: "50+ Repos",
-      isActive: true,
-      sortOrder: 1,
-    },
-    {
-      id: "link-3",
-      title: "LinkedIn 비즈니스 이력서",
-      subtitle: "글로벌 커리어 및 경력 이력 확인하기",
-      url: "https://linkedin.com",
-      icon: "💼",
-      badge: "연락 가능",
-      isActive: true,
-      sortOrder: 2,
-    },
-    {
-      id: "link-4",
-      title: "1:1 커피챗 신청하기",
-      subtitle: "웹 개발 & 커리어 관련 편하게 소통해요",
-      url: "https://tally.so",
-      icon: "☕",
-      badge: "신청 가능",
-      isActive: true,
-      sortOrder: 3,
-    },
-  ],
+  links: mockLinksData.data as LinkBlock[],
   socials: [
     { platform: "instagram", url: "https://instagram.com" },
     { platform: "youtube", url: "https://youtube.com" },
@@ -97,6 +57,24 @@ export const useProfileStore = create<ProfileStore>()(
     {
       name: "mylink_profile_v1",
       storage: createJSONStorage(() => localStorage),
+      version: 1,
+      migrate: (persistedState: any, version: number) => {
+        if (
+          !persistedState ||
+          version < 1 ||
+          !persistedState?.profile?.links ||
+          persistedState.profile.links.length < 8
+        ) {
+          return {
+            ...persistedState,
+            profile: {
+              ...(persistedState?.profile || initialProfileData),
+              links: mockLinksData.data as LinkBlock[],
+            },
+          };
+        }
+        return persistedState;
+      },
     }
   )
 );

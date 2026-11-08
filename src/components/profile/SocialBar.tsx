@@ -3,6 +3,8 @@
 import { SocialLink } from "@/types/mylink";
 import { Mail, Link as LinkIcon } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
+
 interface SocialBarProps {
   socials: SocialLink[];
 }
@@ -44,17 +46,23 @@ export default function SocialBar({ socials }: SocialBarProps) {
   };
 
   return (
-    <div className="flex items-center justify-center gap-3 py-2">
+    <div className="flex items-center justify-center gap-2.5 py-2">
       {socials.map((social, idx) => (
         <a
           key={idx}
           href={social.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="p-3 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-sm border border-gray-100 dark:border-gray-700 hover:scale-110 active:scale-95 transition-all duration-200"
+          target={social.url.startsWith("mailto:") ? undefined : "_blank"}
+          rel={social.url.startsWith("mailto:") ? undefined : "noopener noreferrer"}
           aria-label={social.platform}
+          className="inline-block"
         >
-          {getSocialIcon(social.platform)}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="w-11 h-11 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-sm border border-gray-100 dark:border-gray-700 hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer"
+          >
+            {getSocialIcon(social.platform)}
+          </Button>
         </a>
       ))}
     </div>

@@ -2,7 +2,7 @@
 
 > **대상 화면:** 공개 프로필 뷰어 (`mylink.com/[username]`)  
 > **디자인 스펙:** 모바일 퍼스트 (Mobile-First, 390px ~ 430px 규격 최적화)  
-> **스타일 기조:** 토스 스타일 (Toss Design System - 깔끔함, 여백 중심, 둥근 모서리, 명확한 터치 피드백)  
+> **스타일 기조:** shadcn/ui 기반 컴포넌트 시스템 & 토스 스타일 (Toss Design System - 깔끔함, 여백 중심, 둥근 모서리, 명확한 터치 피드백, Tailwind CSS v4)  
 
 ---
 

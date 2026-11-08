@@ -7,6 +7,10 @@ export interface LinkBlock {
   badge?: string;
   isActive: boolean;
   sortOrder: number;
+  clickCount?: number;
+  category?: "tech" | "career" | "contact" | "project" | "portfolio" | "social" | string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface SocialLink {
